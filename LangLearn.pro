@@ -17,13 +17,16 @@ SOURCES += main.cpp\
         startwindow.cpp \
     addwordswindow.cpp \
     database.cpp \
-    dictionarywindow.cpp
+    dictionarywindow.cpp \
+    studywindow.cpp
 
 HEADERS  += startwindow.h \
     addwordswindow.h \
     database.h \
-    dictionarywindow.h
+    dictionarywindow.h \
+    studywindow.h
 
 FORMS    += startwindow.ui \
     addwordswindow.ui \
-    dictionarywindow.ui
+    dictionarywindow.ui \
+    studywindow.ui

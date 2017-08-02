@@ -36,3 +36,13 @@ void StartWindow::on_editButton_clicked()
     dictionary_form.setWindowModality(Qt::WindowModality::ApplicationModal);
     dictionary_form.show();
 }
+
+void StartWindow::on_studyButton_clicked()
+{
+    QRect wGeom = this->geometry();
+    study_form.setGeometry(QRect(wGeom.x(), wGeom.y(),
+                           study_form.geometry().width(),
+                           study_form.geometry().height()));
+    study_form.setWindowModality(Qt::WindowModality::ApplicationModal);
+    study_form.show();
+}

@@ -1,8 +1,6 @@
 #include "addwordswindow.h"
 #include "ui_addwordswindow.h"
 
-#include<iostream>
-
 #include <QMessageBox>
 
 AddWordsWindow::AddWordsWindow(DataBase *_db, QWidget *parent)
