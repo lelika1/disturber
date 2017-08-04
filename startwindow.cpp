@@ -23,7 +23,6 @@ void StartWindow::on_addButton_clicked()
     add_pair_form.setGeometry(QRect(wGeom.x(), wGeom.y(),
                                     add_pair_form.geometry().width(),
                                     add_pair_form.geometry().height()));
-    add_pair_form.setWindowModality(Qt::WindowModality::ApplicationModal);
     add_pair_form.show();
 }
 
@@ -33,7 +32,6 @@ void StartWindow::on_editButton_clicked()
     dictionary_form.setGeometry(QRect(wGeom.x(), wGeom.y(),
                                 dictionary_form.geometry().width(),
                                 dictionary_form.geometry().height()));
-    dictionary_form.setWindowModality(Qt::WindowModality::ApplicationModal);
     dictionary_form.show();
 }
 
@@ -43,6 +41,5 @@ void StartWindow::on_studyButton_clicked()
     study_form.setGeometry(QRect(wGeom.x(), wGeom.y(),
                            study_form.geometry().width(),
                            study_form.geometry().height()));
-    study_form.setWindowModality(Qt::WindowModality::ApplicationModal);
     study_form.show();
 }
