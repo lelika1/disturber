@@ -5,12 +5,10 @@
 #include <QDesktopWidget>
 
 #include <unistd.h>
-#include <iostream>
 
 int main(int argc, char *argv[])
 {
     while (true) {
-        std::cout << " !!!! " << std::endl;
         QApplication a(argc, argv);
         DataBase db("dictionary.db");
         StartWindow w(&db);

@@ -32,7 +32,7 @@ void StartWindow::on_editButton_clicked()
     dictionary_form.setGeometry(QRect(wGeom.x(), wGeom.y(),
                                 dictionary_form.geometry().width(),
                                 dictionary_form.geometry().height()));
-    dictionary_form.show();
+    dictionary_form.ShowTable();
 }
 
 void StartWindow::on_studyButton_clicked()

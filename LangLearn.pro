@@ -4,14 +4,14 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = LangLearn
 TEMPLATE = app
 
-LIBS += -lsqlite3
+#LIBS += -lsqlite3
 
 SOURCES += main.cpp\
         startwindow.cpp \

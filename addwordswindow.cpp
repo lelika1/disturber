@@ -15,7 +15,6 @@ AddWordsWindow::~AddWordsWindow() {
     delete ui;
 }
 
-
 void AddWordsWindow::on_addButton_clicked() {
     QString ru_word = ui->ruWordEdit->text().simplified();
     QString de_word = ui->deWordEdit->text().simplified();
@@ -25,7 +24,11 @@ void AddWordsWindow::on_addButton_clicked() {
         msgBox.setText("All words should be not empty!");
         msgBox.exec();
     } else {
-        db->AddEntry(ru_word.toStdString().c_str(), de_word.toStdString().c_str());
+        if (db->AddEntry(ru_word, de_word)) {
+            QMessageBox msgBox;
+            msgBox.setText(QString("Add entry (%1, %2) failed!").arg(ru_word).arg(de_word));
+            msgBox.exec();
+        }
         ui->ruWordEdit->setText("");
         ui->deWordEdit->setText("");
     }
