@@ -9,14 +9,17 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>401</width>
-    <height>489</height>
+    <width>447</width>
+    <height>461</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>All Dictionary</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetMaximumSize</enum>
+   </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
@@ -46,68 +49,12 @@
       <enum>QAbstractItemView::SelectItems</enum>
      </property>
      <attribute name="horizontalHeaderDefaultSectionSize">
-      <number>200</number>
+      <number>300</number>
      </attribute>
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
     </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="printAeButton">
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-         <italic>true</italic>
-        </font>
-       </property>
-       <property name="text">
-        <string>ä</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="printOeButton">
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-         <italic>true</italic>
-        </font>
-       </property>
-       <property name="text">
-        <string>ö</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="printUeButton">
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-         <italic>true</italic>
-        </font>
-       </property>
-       <property name="text">
-        <string>ü</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="printSsButton">
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-         <italic>true</italic>
-        </font>
-       </property>
-       <property name="text">
-        <string>ß</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">

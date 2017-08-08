@@ -1,5 +1,6 @@
 #include "dictionarywindow.h"
 #include "ui_dictionarywindow.h"
+#include "superedit.h"
 
 #include <QMessageBox>
 #include <QCloseEvent>
@@ -13,6 +14,7 @@ DictionaryWindow::DictionaryWindow(DataBase *_db, QWidget *parent)
     sql_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     ui->setupUi(this);
     ui->dictTableView->setModel(sql_model);
+    ui->dictTableView->setItemDelegateForColumn(2, new SuperEditDelegate(this));
 }
 
 DictionaryWindow::~DictionaryWindow()
@@ -48,26 +50,6 @@ void DictionaryWindow::on_saveButton_clicked()
     if (!sql_model->submitAll()) {
         qDebug() << "Submit all FAILED!!!!!!\n";
     }
-}
-
-void DictionaryWindow::on_printAeButton_clicked()
-{
-
-}
-
-void DictionaryWindow::on_printOeButton_clicked()
-{
-
-}
-
-void DictionaryWindow::on_printUeButton_clicked()
-{
-
-}
-
-void DictionaryWindow::on_printSsButton_clicked()
-{
-
 }
 
 void DictionaryWindow::on_findButton_clicked()

@@ -18,15 +18,18 @@ SOURCES += main.cpp\
     addwordswindow.cpp \
     database.cpp \
     dictionarywindow.cpp \
-    studywindow.cpp
+    studywindow.cpp \
+    superedit.cpp
 
 HEADERS  += startwindow.h \
     addwordswindow.h \
     database.h \
     dictionarywindow.h \
-    studywindow.h
+    studywindow.h \
+    superedit.h
 
 FORMS    += startwindow.ui \
     addwordswindow.ui \
     dictionarywindow.ui \
-    studywindow.ui
+    studywindow.ui \
+    superedit.ui

@@ -25,14 +25,6 @@ protected:
 private slots:
     void on_saveButton_clicked();
 
-    void on_printAeButton_clicked();
-
-    void on_printOeButton_clicked();
-
-    void on_printUeButton_clicked();
-
-    void on_printSsButton_clicked();
-
     void on_findButton_clicked();
 
     void on_revertButton_clicked();

@@ -1,6 +1,10 @@
 #include "startwindow.h"
 #include "ui_startwindow.h"
 
+#include <QApplication>
+#include <QDesktopWidget>
+
+
 StartWindow::StartWindow(DataBase *_db, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::StartWindow)
@@ -28,10 +32,9 @@ void StartWindow::on_addButton_clicked()
 
 void StartWindow::on_editButton_clicked()
 {
-    QRect wGeom = this->geometry();
-    dictionary_form.setGeometry(QRect(wGeom.x(), wGeom.y(),
-                                dictionary_form.geometry().width(),
-                                dictionary_form.geometry().height()));
+    QRect screenGeometry = QApplication::desktop()->screenGeometry();
+//    QRect wGeom = this->geometry();
+    dictionary_form.setGeometry(screenGeometry);
     dictionary_form.ShowTable();
 }
 
