@@ -1,12 +1,27 @@
 #include "studywindow.h"
 #include "ui_studywindow.h"
 
-StudyWindow::StudyWindow(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::StudyWindow)
+StudyWindow::StudyWindow(QWidget *parent)
+    : QWidget(parent)
+    , ui(new Ui::StudyWindow)
+    , ruToDeDirection(true)
 {
     ui->setupUi(this);
-    ui->deWordEdit->setFocus();
+
+    ui->toWordEdit->setFocus();
+    ui->fromLabel->setText("Russian word");
+    ui->toLabel->setText("German word");
+
+    ui->ru_deButton->setChecked(true);
+    ui->de_ruButton->setChecked(false);
+
+    ui->printAeButton->setEnabled(true);
+    ui->printUeButton->setEnabled(true);
+    ui->printOeButton->setEnabled(true);
+    ui->printSsButton->setEnabled(true);
+
+    ui->fromWordEdit->setText("русский -> немецкий");
+
     this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint );
 }
 
@@ -15,35 +30,34 @@ StudyWindow::~StudyWindow()
     delete ui;
 }
 
-void StudyWindow::on_printAeButton_clicked()
-{
-    if (ui->deWordEdit->isEnabled()) {
-        ui->deWordEdit->insert(ui->printAeButton->text().simplified());
-        ui->deWordEdit->setFocus();
+void StudyWindow::on_printAeButton_clicked() {
+    if (ruToDeDirection) {
+        ui->toWordEdit->insert(ui->printAeButton->text().simplified());
+        ui->toWordEdit->setFocus();
     }
 }
 
 void StudyWindow::on_printOeButton_clicked()
 {
-    if (ui->deWordEdit->isEnabled()) {
-        ui->deWordEdit->insert(ui->printOeButton->text().simplified());
-        ui->deWordEdit->setFocus();
+    if (ruToDeDirection) {
+        ui->toWordEdit->insert(ui->printOeButton->text().simplified());
+        ui->toWordEdit->setFocus();
     }
 }
 
 void StudyWindow::on_printUeButton_clicked()
 {
-    if (ui->deWordEdit->isEnabled()) {
-        ui->deWordEdit->insert(ui->printUeButton->text().simplified());
-        ui->deWordEdit->setFocus();
+    if (ruToDeDirection) {
+        ui->toWordEdit->insert(ui->printUeButton->text().simplified());
+        ui->toWordEdit->setFocus();
     }
 }
 
 void StudyWindow::on_printSsButton_clicked()
 {
-    if (ui->deWordEdit->isEnabled()) {
-        ui->deWordEdit->insert(ui->printSsButton->text().simplified());
-        ui->deWordEdit->setFocus();
+    if (ruToDeDirection) {
+        ui->toWordEdit->insert(ui->printSsButton->text().simplified());
+        ui->toWordEdit->setFocus();
     }
 }
 
@@ -59,25 +73,33 @@ void StudyWindow::on_checkButton_clicked()
 
 void StudyWindow::on_ru_deButton_clicked()
 {
-    ui->ruWordEdit->setEnabled(false);
-    ui->deWordEdit->setEnabled(true);
-    ui->deWordEdit->setFocus();
+    ruToDeDirection = true;
+
+    ui->toWordEdit->setFocus();
+    ui->fromLabel->setText("Russian word");
+    ui->toLabel->setText("German word");
 
     ui->printAeButton->setEnabled(true);
     ui->printUeButton->setEnabled(true);
     ui->printOeButton->setEnabled(true);
     ui->printSsButton->setEnabled(true);
+
+    ui->fromWordEdit->setText("русский -> немецкий");
 }
 
 void StudyWindow::on_de_ruButton_clicked()
 {
-    ui->ruWordEdit->setEnabled(true);
-    ui->deWordEdit->setEnabled(false);
-    ui->ruWordEdit->setFocus();
+    ruToDeDirection = false;
+
+    ui->toWordEdit->setFocus();
+    ui->fromLabel->setText("German word");
+    ui->toLabel->setText("Russian word");
 
     ui->printAeButton->setEnabled(false);
     ui->printUeButton->setEnabled(false);
     ui->printOeButton->setEnabled(false);
     ui->printSsButton->setEnabled(false);
+
+    ui->fromWordEdit->setText("deutsch -> russisch");
 }
 

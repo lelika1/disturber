@@ -101,14 +101,14 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="fromLabel">
           <property name="text">
            <string>Russian word</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="toLabel">
           <property name="text">
            <string>German word</string>
           </property>
@@ -119,14 +119,14 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QLineEdit" name="ruWordEdit">
+         <widget class="QLineEdit" name="fromWordEdit">
           <property name="enabled">
            <bool>false</bool>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="deWordEdit"/>
+         <widget class="QLineEdit" name="toWordEdit"/>
         </item>
        </layout>
       </item>

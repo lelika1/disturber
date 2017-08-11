@@ -34,6 +34,7 @@ private slots:
 
 private:
     Ui::StudyWindow *ui;
+    bool ruToDeDirection;
 };
 
 #endif // STUDYWINDOW_H
