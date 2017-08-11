@@ -7,6 +7,7 @@ StudyWindow::StudyWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->deWordEdit->setFocus();
+    this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint );
 }
 
 StudyWindow::~StudyWindow()
