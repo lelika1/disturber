@@ -8,18 +8,24 @@
 
 int main(int argc, char *argv[])
 {
-    while (true) {
-        QApplication a(argc, argv);
+    try {
         DataBase db("dictionary.db");
+        QApplication a(argc, argv);
         StartWindow w(&db);
         QRect wGeom = w.geometry();
         QDesktopWidget *desktop = QApplication::desktop();
         w.setGeometry(QRect((desktop->screenGeometry().width() -  wGeom.width())/2,
                             (desktop->screenGeometry().height()- wGeom.height())/2,
                              wGeom.width(), wGeom.height()));
-        w.show();
-        a.exec();
-        usleep(20 * 60 * 1000000);
+
+        while (true) {
+            w.show();
+            a.exec();
+            usleep(20 * 60 * 1000000);
+        }
+    } catch(DBCreateException ex) {
+        qDebug() << ex.what();
     }
+
     return 0;
 }

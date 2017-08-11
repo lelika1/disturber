@@ -4,7 +4,6 @@
 #include "superedit.h"
 
 #include <QCloseEvent>
-#include <QMessageBox>
 
 DictionaryWindow::DictionaryWindow(DataBase *_db, QWidget *parent)
     : QWidget(parent)

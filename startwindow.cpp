@@ -10,6 +10,7 @@ StartWindow::StartWindow(DataBase *_db, QWidget *parent)
     , ui(new Ui::StartWindow)
     , add_pair_form(_db)
     , dictionary_form(_db)
+    , study_form(_db)
     , db(_db)
 {
     ui->setupUi(this);

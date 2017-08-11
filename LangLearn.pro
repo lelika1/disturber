@@ -19,14 +19,16 @@ SOURCES += main.cpp\
     database.cpp \
     dictionarywindow.cpp \
     studywindow.cpp \
-    superedit.cpp
+    superedit.cpp \
+    teacher.cpp
 
 HEADERS  += startwindow.h \
     addwordswindow.h \
     database.h \
     dictionarywindow.h \
     studywindow.h \
-    superedit.h
+    superedit.h \
+    teacher.h
 
 FORMS    += startwindow.ui \
     addwordswindow.ui \

@@ -2,6 +2,13 @@
 #include <exception>
 #include <iostream>
 
+StudyEntry::StudyEntry(int _id, const QString &ru, const QString &de)
+    : id(_id)
+    , ruWord(ru)
+    , deWord(de)
+    , mistakesCount(-1)
+{}
+
 DataBase::DataBase(const QString &db_name) {
     sdb = QSqlDatabase::addDatabase("QSQLITE");
     sdb.setDatabaseName(db_name);

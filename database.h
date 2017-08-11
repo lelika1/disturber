@@ -1,9 +1,18 @@
 #pragma once
 
+#include <QString>
 #include <QtSql>
 
 #include <vector>
 
+struct StudyEntry {
+    int id;
+    QString ruWord;
+    QString deWord;
+    int mistakesCount;
+
+    StudyEntry(int _id, const QString &ru, const QString &de);
+};
 
 class DBCreateException: public std::exception {
 public:

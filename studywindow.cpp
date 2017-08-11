@@ -1,10 +1,13 @@
 #include "studywindow.h"
 #include "ui_studywindow.h"
 
-StudyWindow::StudyWindow(QWidget *parent)
+#include <QMessageBox>
+
+StudyWindow::StudyWindow(DataBase *db, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::StudyWindow)
     , ruToDeDirection(true)
+    , teacher(db)
 {
     ui->setupUi(this);
 
@@ -20,8 +23,7 @@ StudyWindow::StudyWindow(QWidget *parent)
     ui->printOeButton->setEnabled(true);
     ui->printSsButton->setEnabled(true);
 
-    ui->fromWordEdit->setText("русский -> немецкий");
-
+    ui->fromWordEdit->setText(teacher.GetNewWords(ruToDeDirection));
     this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint );
 }
 
@@ -68,12 +70,22 @@ void StudyWindow::on_closeButton_clicked()
 
 void StudyWindow::on_checkButton_clicked()
 {
+    QString correctAnswer;
+    if (!teacher.CheckResult(ruToDeDirection, ui->toWordEdit->text().simplified(), correctAnswer)) {
+        QMessageBox msgBox;
+        msgBox.setText(QString("Wrong. Correct translation: %1").arg(correctAnswer));
+        msgBox.exec();
+    }
 
+    ui->fromWordEdit->setText(teacher.GetNewWords(ruToDeDirection));
+    ui->toWordEdit->setText("");
 }
 
 void StudyWindow::on_ru_deButton_clicked()
 {
     ruToDeDirection = true;
+    ui->fromWordEdit->setText(teacher.GetNewWords(ruToDeDirection));
+    ui->toWordEdit->setText("");
 
     ui->toWordEdit->setFocus();
     ui->fromLabel->setText("Russian word");
@@ -83,13 +95,13 @@ void StudyWindow::on_ru_deButton_clicked()
     ui->printUeButton->setEnabled(true);
     ui->printOeButton->setEnabled(true);
     ui->printSsButton->setEnabled(true);
-
-    ui->fromWordEdit->setText("русский -> немецкий");
 }
 
 void StudyWindow::on_de_ruButton_clicked()
 {
     ruToDeDirection = false;
+    ui->fromWordEdit->setText(teacher.GetNewWords(ruToDeDirection));
+    ui->toWordEdit->setText("");
 
     ui->toWordEdit->setFocus();
     ui->fromLabel->setText("German word");
@@ -99,7 +111,5 @@ void StudyWindow::on_de_ruButton_clicked()
     ui->printUeButton->setEnabled(false);
     ui->printOeButton->setEnabled(false);
     ui->printSsButton->setEnabled(false);
-
-    ui->fromWordEdit->setText("deutsch -> russisch");
 }
 

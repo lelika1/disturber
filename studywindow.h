@@ -1,6 +1,8 @@
 #ifndef STUDYWINDOW_H
 #define STUDYWINDOW_H
 
+#include "teacher.h"
+
 #include <QWidget>
 
 namespace Ui {
@@ -12,7 +14,7 @@ class StudyWindow : public QWidget
     Q_OBJECT
 
 public:
-    explicit StudyWindow(QWidget *parent = 0);
+    explicit StudyWindow(DataBase *db, QWidget *parent = 0);
     ~StudyWindow();
 
 private slots:
@@ -34,7 +36,9 @@ private slots:
 
 private:
     Ui::StudyWindow *ui;
+
     bool ruToDeDirection;
+    Teacher teacher;
 };
 
 #endif // STUDYWINDOW_H
