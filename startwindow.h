@@ -9,11 +9,13 @@
 #include <QMainWindow>
 
 namespace Ui {
-class StartWindow;
-}
 
-class StartWindow : public QMainWindow
-{
+class StartWindow;
+
+} // namespace Ui
+
+
+class StartWindow : public QMainWindow {
     Q_OBJECT
 
 public:

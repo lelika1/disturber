@@ -5,11 +5,13 @@
 #include <QWidget>
 
 namespace Ui {
-class DictionaryWindow;
-}
 
-class DictionaryWindow : public QWidget
-{
+class DictionaryWindow;
+
+} // namespace Ui
+
+
+class DictionaryWindow : public QWidget {
     Q_OBJECT
 
 public:
@@ -19,20 +21,14 @@ public:
 public:
     void ShowTable();
 
-protected:
-    void closeEvent(QCloseEvent *event);
-
 private slots:
-    void on_saveButton_clicked();
+    void on_deleteRowButton_clicked();
 
-    void on_findButton_clicked();
-
-    void on_revertButton_clicked();
+    void on_findEdit_textChanged(const QString &arg1);
 
 private:
     Ui::DictionaryWindow *ui;
     DataBase *db;
-    //QSqlQueryModel sql_model;
     QSqlTableModel *sql_model;
 };
 

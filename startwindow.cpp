@@ -13,7 +13,6 @@ StartWindow::StartWindow(DataBase *_db, QWidget *parent)
     , db(_db)
 {
     ui->setupUi(this);
-    //add_pair_form = new AddWordsWindow();
 }
 
 StartWindow::~StartWindow()
@@ -33,7 +32,6 @@ void StartWindow::on_addButton_clicked()
 void StartWindow::on_editButton_clicked()
 {
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
-//    QRect wGeom = this->geometry();
     dictionary_form.setGeometry(screenGeometry);
     dictionary_form.ShowTable();
 }

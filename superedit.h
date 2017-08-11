@@ -34,11 +34,10 @@ private:
 class SuperEditDelegate : public QItemDelegate {
 public:
     SuperEditDelegate(QObject *parent = 0);
-    QWidget* createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const; //создаем редактор делегата - это наш виджет
-    void setEditorData(QWidget *editor, const QModelIndex &index) const; //устанавливаем данные в редакторе
+    QWidget* createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    void setEditorData(QWidget *editor, const QModelIndex &index) const;
 
-    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const; //а здесь данные из редактора передаем уже в модель
-    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
 };
 
 #endif // SUPEREDIT_H

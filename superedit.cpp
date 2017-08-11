@@ -15,24 +15,19 @@ SuperEdit::~SuperEdit()
 
 SuperEditDelegate::SuperEditDelegate(QObject *parent) : QItemDelegate(parent) {}
 
-QWidget* SuperEditDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &/*index*/) const {
+QWidget* SuperEditDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &/*option*/, const QModelIndex &/*index*/) const {
     return new SuperEdit(parent);
 }
 
 void SuperEditDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
-    //в этой функции на входе данные из модели и указатель на виджет редактора
-    QString value = index.model()->data(index).toString(); //получаем что уже есть в модели
-    SuperEdit* edit = static_cast<SuperEdit*>(editor); //преобразуем указатель
+    QString value = index.model()->data(index).toString();
+    SuperEdit* edit = static_cast<SuperEdit*>(editor);
     edit->ui->lineEdit->setText(value);
 }
 
 void SuperEditDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const {
     SuperEdit* edit = static_cast<SuperEdit*>(editor);
     model->setData(index, edit->ui->lineEdit->text());
-}
-
-void SuperEditDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const {
-    editor->setGeometry(option.rect);
 }
 
 void SuperEdit::on_printAeButton_clicked()

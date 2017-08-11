@@ -1,9 +1,10 @@
 #include "dictionarywindow.h"
 #include "ui_dictionarywindow.h"
+
 #include "superedit.h"
 
-#include <QMessageBox>
 #include <QCloseEvent>
+#include <QMessageBox>
 
 DictionaryWindow::DictionaryWindow(DataBase *_db, QWidget *parent)
     : QWidget(parent)
@@ -11,53 +12,35 @@ DictionaryWindow::DictionaryWindow(DataBase *_db, QWidget *parent)
     , db(_db)
 {
     sql_model = new QSqlTableModel;
-    sql_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    sql_model->setEditStrategy(QSqlTableModel::OnFieldChange);
     ui->setupUi(this);
     ui->dictTableView->setModel(sql_model);
     ui->dictTableView->setItemDelegateForColumn(2, new SuperEditDelegate(this));
 }
 
-DictionaryWindow::~DictionaryWindow()
-{
+DictionaryWindow::~DictionaryWindow() {
     delete ui;
 }
 
 void DictionaryWindow::ShowTable() {
     this->show();
-    db->ShowAllEntries(sql_model);
+    db->LoadAllEntriesToModel(sql_model);
 
     ui->dictTableView->hideColumn(0);
     ui->dictTableView->show();
 }
 
-void DictionaryWindow::closeEvent(QCloseEvent *event) {
-    QMessageBox::StandardButton reply = QMessageBox::question(this, "Save", "Save changes?",
-                                                              QMessageBox::No|QMessageBox::Yes);
-    if (reply == QMessageBox::Yes) {
-        qDebug() << "Yes was clicked";
-        if (!sql_model->submitAll()) {
-            qDebug() << "Submit all FAILED!!!!!!\n";
-        }
-    } else {
-        qDebug() << "No was clicked";
-        sql_model->revertAll();
+void DictionaryWindow::on_deleteRowButton_clicked() {
+    QModelIndexList selectedItems = ui->dictTableView->selectionModel()->selectedIndexes();
+    if (selectedItems.size() != 1) {
+        qDebug() << "Fail. Currently selected " << selectedItems.size() << " items\n";
+        return;
     }
-    event->accept();
+
+    sql_model->removeRow(selectedItems[0].row());
 }
 
-void DictionaryWindow::on_saveButton_clicked()
-{
-    if (!sql_model->submitAll()) {
-        qDebug() << "Submit all FAILED!!!!!!\n";
-    }
-}
-
-void DictionaryWindow::on_findButton_clicked()
-{
-
-}
-
-void DictionaryWindow::on_revertButton_clicked()
-{
-    sql_model->revertAll();
+void DictionaryWindow::on_findEdit_textChanged(const QString &arg1) {
+    db->LoadEntriesWithFilter(sql_model, arg1.simplified());
+    ui->dictTableView->hideColumn(0);
 }
