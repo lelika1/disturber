@@ -76,6 +76,42 @@
     </layout>
    </widget>
   </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>235</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuDictionary_CSV">
+    <property name="title">
+     <string>Dictionary</string>
+    </property>
+    <addaction name="actionDictionary_CSV"/>
+    <addaction name="actionCSV_Dictionary"/>
+   </widget>
+   <addaction name="menuDictionary_CSV"/>
+  </widget>
+  <action name="actionF">
+   <property name="text">
+    <string>f</string>
+   </property>
+  </action>
+  <action name="actionDictionary_CSV">
+   <property name="text">
+    <string>Dictionary -&gt; CSV</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Export Dictionary to CSV file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </action>
+  <action name="actionCSV_Dictionary">
+   <property name="text">
+    <string>CSV -&gt; Dictionary</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

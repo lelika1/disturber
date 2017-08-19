@@ -32,6 +32,8 @@ public:
     void LoadAllEntriesToModel(QSqlTableModel *model);
     void LoadEntriesWithFilter(QSqlTableModel *model, const QString &wordPart);
 
+    int ExportDictionaryToCSV(QString &csvPath);
+
 public:
     QSqlDatabase sdb;
 };

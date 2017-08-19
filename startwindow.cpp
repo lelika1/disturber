@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 
+#include <QMessageBox>
 
 StartWindow::StartWindow(DataBase *_db, QWidget *parent)
     : QMainWindow(parent)
@@ -16,13 +17,11 @@ StartWindow::StartWindow(DataBase *_db, QWidget *parent)
     ui->setupUi(this);
 }
 
-StartWindow::~StartWindow()
-{
+StartWindow::~StartWindow() {
     delete ui;
 }
 
-void StartWindow::on_addButton_clicked()
-{
+void StartWindow::on_addButton_clicked() {
     QRect wGeom = this->geometry();
     add_pair_form.setGeometry(QRect(wGeom.x(), wGeom.y(),
                                     add_pair_form.geometry().width(),
@@ -30,15 +29,13 @@ void StartWindow::on_addButton_clicked()
     add_pair_form.show();
 }
 
-void StartWindow::on_editButton_clicked()
-{
+void StartWindow::on_editButton_clicked() {
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
     dictionary_form.setGeometry(screenGeometry);
     dictionary_form.ShowTable();
 }
 
-void StartWindow::on_studyButton_clicked()
-{
+void StartWindow::on_studyButton_clicked() {
     QRect wGeom = this->geometry();
     study_form.setGeometry(QRect(wGeom.x(), wGeom.y(),
                            study_form.geometry().width(),
@@ -46,11 +43,19 @@ void StartWindow::on_studyButton_clicked()
     study_form.show();
 }
 
-void StartWindow::on_settingsButton_clicked()
-{
+void StartWindow::on_settingsButton_clicked() {
     QRect wGeom = this->geometry();
     setting_form.setGeometry(QRect(wGeom.x(), wGeom.y(),
                              setting_form.geometry().width(),
                              setting_form.geometry().height()));
     setting_form.show();
+}
+
+void StartWindow::on_actionDictionary_CSV_triggered() {
+    QString csvPath;
+    db->ExportDictionaryToCSV(csvPath);
+
+    QMessageBox msgBox;
+    msgBox.setText(QString("Dictionary was exported to file: %1").arg(csvPath));
+    msgBox.exec();
 }

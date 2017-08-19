@@ -2,6 +2,7 @@
 #include <exception>
 #include <iostream>
 
+
 StudyEntry::StudyEntry(int _id, const QString &ru, const QString &de)
     : id(_id)
     , ruWord(ru)
@@ -56,3 +57,26 @@ void DataBase::LoadEntriesWithFilter(QSqlTableModel *model, const QString &wordP
     model->setFilter(QString("RU LIKE '%%1%' OR DE LIKE '%%1%'").arg(wordPart));
     model->select();
 }
+
+int DataBase::ExportDictionaryToCSV(QString &csvPath) {
+    QSqlQuery add_query;
+    if (!add_query.exec("SELECT RU, DE FROM DICTIONARY;")) {
+        qDebug() << "Select entries failed. Error:" << sdb.lastError().text() << "\n";
+        return 1;
+    }
+
+    QString currentTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_HH:mm");
+    csvPath = QDir::currentPath() + "/dictionary_" + currentTime + ".csv";
+    QFile fileWriter(csvPath);
+    fileWriter.open(QFile::WriteOnly | QFile::Truncate);
+
+    QTextStream textStream(&fileWriter);
+    while (add_query.next()) {
+        QString ru = add_query.value(0).toString();
+        QString de = add_query.value(1).toString();
+        textStream << ru << "," << de << '\n';
+    }
+    fileWriter.close();
+    return 0;
+}
+
