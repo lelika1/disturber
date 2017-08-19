@@ -4,6 +4,7 @@
 #include "addwordswindow.h"
 #include "database.h"
 #include "dictionarywindow.h"
+#include "settings.h"
 #include "studywindow.h"
 
 #include <QMainWindow>
@@ -29,10 +30,13 @@ private slots:
 
     void on_studyButton_clicked();
 
+    void on_settingsButton_clicked();
+
 private:
     Ui::StartWindow *ui;
     AddWordsWindow add_pair_form;
     DictionaryWindow dictionary_form;
+    Settings setting_form;
     StudyWindow study_form;
     DataBase *db;
 };

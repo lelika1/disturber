@@ -23,7 +23,7 @@ StudyWindow::StudyWindow(DataBase *db, QWidget *parent)
     ui->printOeButton->setEnabled(true);
     ui->printSsButton->setEnabled(true);
 
-    ui->fromWordEdit->setText(teacher.GetNewWords(ruToDeDirection));
+    ui->fromWordLabel->setText(teacher.GetNewWords(ruToDeDirection));
     this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint );
 }
 
@@ -65,7 +65,7 @@ void StudyWindow::on_printSsButton_clicked()
 
 void StudyWindow::on_closeButton_clicked()
 {
-
+    close();
 }
 
 void StudyWindow::on_checkButton_clicked()
@@ -77,14 +77,14 @@ void StudyWindow::on_checkButton_clicked()
         msgBox.exec();
     }
 
-    ui->fromWordEdit->setText(teacher.GetNewWords(ruToDeDirection));
+    ui->fromWordLabel->setText(teacher.GetNewWords(ruToDeDirection));
     ui->toWordEdit->setText("");
 }
 
 void StudyWindow::on_ru_deButton_clicked()
 {
     ruToDeDirection = true;
-    ui->fromWordEdit->setText(teacher.GetNewWords(ruToDeDirection));
+    ui->fromWordLabel->setText(teacher.GetNewWords(ruToDeDirection));
     ui->toWordEdit->setText("");
 
     ui->toWordEdit->setFocus();
@@ -100,7 +100,7 @@ void StudyWindow::on_ru_deButton_clicked()
 void StudyWindow::on_de_ruButton_clicked()
 {
     ruToDeDirection = false;
-    ui->fromWordEdit->setText(teacher.GetNewWords(ruToDeDirection));
+    ui->fromWordLabel->setText(teacher.GetNewWords(ruToDeDirection));
     ui->toWordEdit->setText("");
 
     ui->toWordEdit->setFocus();

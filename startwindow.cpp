@@ -45,3 +45,12 @@ void StartWindow::on_studyButton_clicked()
                            study_form.geometry().height()));
     study_form.show();
 }
+
+void StartWindow::on_settingsButton_clicked()
+{
+    QRect wGeom = this->geometry();
+    setting_form.setGeometry(QRect(wGeom.x(), wGeom.y(),
+                             setting_form.geometry().width(),
+                             setting_form.geometry().height()));
+    setting_form.show();
+}
