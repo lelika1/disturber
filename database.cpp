@@ -19,10 +19,14 @@ DataBase::DataBase(const QString &db_name) {
         throw DBCreateException();
     }
 
-    QString kCreateTableSql = "CREATE TABLE IF NOT EXISTS DICTIONARY("                  \
-                              "ID    INTEGER   PRIMARY KEY   AUTOINCREMENT NOT NULL,"   \
-                              "RU    TEXT                                  NOT NULL,"   \
-                              "DE    TEXT                                  NOT NULL);";
+    QString kCreateTableSql = "CREATE TABLE IF NOT EXISTS DICTIONARY("                      \
+                              "ID           INTEGER   PRIMARY KEY   AUTOINCREMENT NOT NULL,"\
+                              "RU           TEXT                                  NOT NULL,"\
+                              "DE           TEXT                                  NOT NULL,"\
+                              "LASTDATE     INTEGER   DEFAULT 0,"                           \
+                              "PROGRESS     REAL      DEFAULT 0.0,"                         \
+                              "SHOWAFTER    INTEGER   DEFAULT 0);";
+
     QSqlQuery create_query;
     if (!create_query.exec(kCreateTableSql)) {
         sdb.close();

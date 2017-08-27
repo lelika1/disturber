@@ -26,6 +26,8 @@ void DictionaryWindow::ShowTable() {
     db->LoadAllEntriesToModel(sql_model);
 
     ui->dictTableView->hideColumn(0);
+    ui->dictTableView->hideColumn(3);
+    ui->dictTableView->hideColumn(4);
     ui->dictTableView->show();
 }
 
@@ -42,4 +44,6 @@ void DictionaryWindow::on_deleteRowButton_clicked() {
 void DictionaryWindow::on_findEdit_textChanged(const QString &arg1) {
     db->LoadEntriesWithFilter(sql_model, arg1.simplified());
     ui->dictTableView->hideColumn(0);
+    ui->dictTableView->hideColumn(3);
+    ui->dictTableView->hideColumn(4);
 }
