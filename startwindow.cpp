@@ -40,7 +40,7 @@ void StartWindow::on_studyButton_clicked() {
     study_form.setGeometry(QRect(wGeom.x(), wGeom.y(),
                            study_form.geometry().width(),
                            study_form.geometry().height()));
-    study_form.show();
+    study_form.Show();
 }
 
 void StartWindow::on_settingsButton_clicked() {

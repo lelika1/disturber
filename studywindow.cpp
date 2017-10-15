@@ -23,13 +23,26 @@ StudyWindow::StudyWindow(DataBase *db, QWidget *parent)
     ui->printOeButton->setEnabled(true);
     ui->printSsButton->setEnabled(true);
 
-    ui->fromWordLabel->setText(teacher.GetNewWords(ruToDeDirection));
     this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint );
 }
 
 StudyWindow::~StudyWindow()
 {
     delete ui;
+}
+
+void StudyWindow::Show() {
+    if (!teacher.InitStudy()) {
+        QMessageBox msgBox;
+        msgBox.setText(QString("Dictionary is currently empty!"));
+        msgBox.exec();
+    } else {
+        QString originalWord;
+        teacher.GetNewPair(ruToDeDirection, originalWord);
+        ui->fromWordLabel->setText(originalWord);
+        ui->toWordEdit->setText("");
+        this->show();
+    }
 }
 
 void StudyWindow::on_printAeButton_clicked() {
@@ -63,28 +76,42 @@ void StudyWindow::on_printSsButton_clicked()
     }
 }
 
-void StudyWindow::on_closeButton_clicked()
-{
-    close();
-}
-
 void StudyWindow::on_checkButton_clicked()
 {
     QString correctAnswer;
     if (!teacher.CheckResult(ruToDeDirection, ui->toWordEdit->text().simplified(), correctAnswer)) {
         QMessageBox msgBox;
-        msgBox.setText(QString("Wrong. Correct translation: %1").arg(correctAnswer));
+        msgBox.setText(QString("Wrong! Correct translation: %1").arg(correctAnswer));
         msgBox.exec();
+    } else {
+        QString originalWord;
+        if (!teacher.GetNewPair(ruToDeDirection, originalWord)) {
+            QMessageBox msgBox;
+            msgBox.setText(QString("Words per current study finished!"));
+            msgBox.exec();
+            teacher.UpdateDBAfterStudy();
+            close();
+            return;
+        }
+        ui->fromWordLabel->setText(originalWord);
     }
 
-    ui->fromWordLabel->setText(teacher.GetNewWords(ruToDeDirection));
     ui->toWordEdit->setText("");
 }
 
 void StudyWindow::on_ru_deButton_clicked()
 {
     ruToDeDirection = true;
-    ui->fromWordLabel->setText(teacher.GetNewWords(ruToDeDirection));
+    QString originalWord;
+    if (!teacher.GetNewPair(ruToDeDirection, originalWord)) {
+        QMessageBox msgBox;
+        msgBox.setText(QString("Words per current study finished!"));
+        msgBox.exec();
+        teacher.UpdateDBAfterStudy();
+        close();
+        return;
+    }
+    ui->fromWordLabel->setText(originalWord);
     ui->toWordEdit->setText("");
 
     ui->toWordEdit->setFocus();
@@ -100,7 +127,16 @@ void StudyWindow::on_ru_deButton_clicked()
 void StudyWindow::on_de_ruButton_clicked()
 {
     ruToDeDirection = false;
-    ui->fromWordLabel->setText(teacher.GetNewWords(ruToDeDirection));
+    QString originalWord;
+    if (!teacher.GetNewPair(ruToDeDirection, originalWord)) {
+        QMessageBox msgBox;
+        msgBox.setText(QString("Words per current study finished!"));
+        teacher.UpdateDBAfterStudy();
+        msgBox.exec();
+        close();
+        return;
+    }
+    ui->fromWordLabel->setText(originalWord);
     ui->toWordEdit->setText("");
 
     ui->toWordEdit->setFocus();

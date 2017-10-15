@@ -3,11 +3,16 @@
 #include <iostream>
 
 
-StudyEntry::StudyEntry(int _id, const QString &ru, const QString &de)
+
+StudyEntry::StudyEntry(int _id, const QString &ru, const QString &de,
+                       int lastTime, double rate, int showDate)
     : id(_id)
     , ruWord(ru)
     , deWord(de)
-    , mistakesCount(-1)
+    , lastTestDate(lastTime)
+    , successRate(rate)
+    , showAfterDate(showDate)
+    , isDirty(false)
 {}
 
 DataBase::DataBase(const QString &db_name) {
@@ -47,6 +52,41 @@ int DataBase::AddEntry(const QString &ru_word, const QString &de_word) {
     if (!add_query.exec(add_str)) {
         qDebug() << "Add entry failed. Error:" << sdb.lastError().text() << "\n";
         return 1;
+    }
+    return 0;
+}
+
+int DataBase::SelectAllEntries(std::vector<StudyEntry> &entries) {
+    QSqlQuery add_query;
+    if (!add_query.exec("SELECT * FROM DICTIONARY;")) {
+        qDebug() << "Select entries failed. Error:" << sdb.lastError().text() << "\n";
+        return 1;
+    }
+
+    while (add_query.next()) {
+        entries.emplace_back(StudyEntry(add_query.value(0).toInt(),
+                                        add_query.value(1).toString(),
+                                        add_query.value(2).toString(),
+                                        add_query.value(3).toInt(),
+                                        add_query.value(4).toDouble(),
+                                        add_query.value(5).toInt()));
+    }
+    return 0;
+}
+
+int DataBase::UpdateEntries(const std::vector<StudyEntry> &entries) {
+    for (auto &entry : entries) {
+        if (entry.isDirty) {
+            QString update_str = "UPDATE DICTIONARY SET PROGRESS='%1' WHERE ID='%2';";
+            update_str = update_str.arg(entry.successRate).arg(entry.id);
+            qDebug() << update_str << "\n";
+
+            QSqlQuery update_query;
+            if (!update_query.exec(update_str)) {
+                qDebug() << "Update entry failed. Error:" << sdb.lastError().text() << "\n";
+                return 1;
+            }
+        }
     }
     return 0;
 }

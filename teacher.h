@@ -11,13 +11,17 @@ public:
     ~Teacher();
 
 public:
-    QString GetNewWords(bool ruToDeDirection);
+    bool InitStudy();
+    bool GetNewPair(bool ruToDeDirection, QString &originalWord);
     bool CheckResult(bool ruToDeDirection, const QString &answer, QString &correctAnswer);
 
     void UpdateDBAfterStudy();
 
 private:
     DataBase *db;
+    size_t currentPairIndex;
+    bool learnedByFirstTime;
+    size_t successWordsInStudy;
     std::vector<StudyEntry> entries;
 };
 

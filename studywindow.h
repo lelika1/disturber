@@ -17,6 +17,8 @@ public:
     explicit StudyWindow(DataBase *db, QWidget *parent = 0);
     ~StudyWindow();
 
+    void Show();
+
 private slots:
     void on_printAeButton_clicked();
 
@@ -25,8 +27,6 @@ private slots:
     void on_printUeButton_clicked();
 
     void on_printSsButton_clicked();
-
-    void on_closeButton_clicked();
 
     void on_checkButton_clicked();
 
