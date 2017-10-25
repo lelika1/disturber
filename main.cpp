@@ -1,4 +1,6 @@
 #include "database.h"
+#include "settings.h"
+
 #include "startwindow.h"
 
 #include <QApplication>
@@ -6,9 +8,11 @@
 
 #include <unistd.h>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     try {
+        Configurator &config = Configurator::Instance();
+        config.LoadConfigFromFile("config");
+
         DataBase db("dictionary.db");
         QApplication a(argc, argv);
         StartWindow w(&db);
@@ -21,7 +25,7 @@ int main(int argc, char *argv[])
         while (true) {
             w.show();
             a.exec();
-            usleep(20 * 60 * 1000000);
+            usleep(config.GetPeriodBetweenTrainigs() * 60 * 1000000);
         }
     } catch(DBCreateException ex) {
         qDebug() << ex.what();

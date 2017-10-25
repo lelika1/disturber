@@ -48,7 +48,7 @@ void StartWindow::on_settingsButton_clicked() {
     setting_form.setGeometry(QRect(wGeom.x(), wGeom.y(),
                              setting_form.geometry().width(),
                              setting_form.geometry().height()));
-    setting_form.show();
+    setting_form.Show();
 }
 
 void StartWindow::on_actionDictionary_CSV_triggered() {

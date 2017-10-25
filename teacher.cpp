@@ -1,9 +1,9 @@
-﻿#include "teacher.h"
+﻿#include "settings.h"
+#include "teacher.h"
 
 #include <ctime>
 
-const int KWordsPerStudy = 2;
-const int KSuccessRate = 3;
+Configurator &config = Configurator::Instance();
 
 Teacher::Teacher(DataBase *_db)
     : db(_db)
@@ -18,13 +18,14 @@ bool Teacher::InitStudy() {
     db->SelectAllEntries(entries);
     std::sort(begin(entries), end(entries),
               [](StudyEntry first, StudyEntry second){return first.successRate < second.successRate;});
+
     currentPairIndex = 0;
     successWordsInStudy = 0;
     return entries.size() != 0;
 }
 
 bool Teacher::GetNewPair(bool ruToDeDirection, QString& originalWord) {
-    if (currentPairIndex == entries.size() || successWordsInStudy == KWordsPerStudy) {
+    if (currentPairIndex == entries.size() || successWordsInStudy == config.GetWordsCountPerTraining()) {
         return false;
     }
     originalWord = (ruToDeDirection) ? entries[currentPairIndex].ruWord : entries[currentPairIndex].deWord;
@@ -39,8 +40,8 @@ bool Teacher::CheckResult(bool ruToDeDirection, const QString &answer, QString &
         if (entries[currentPairIndex].successRate == 0) {
              entries[currentPairIndex].successRate = 1;
         }
-        entries[currentPairIndex].successRate *= (1.0 * (KSuccessRate - 1) / KSuccessRate);
-        entries[currentPairIndex].successRate += (1.0 / KSuccessRate) * ((isCorrect) ? 1 : 0);
+        entries[currentPairIndex].successRate *= (1.0 * (config.GetSuccessRate() - 1) / config.GetSuccessRate());
+        entries[currentPairIndex].successRate += (1.0 / config.GetSuccessRate()) * ((isCorrect) ? 1 : 0);
         entries[currentPairIndex].lastTestDate = std::time(nullptr);
         entries[currentPairIndex].isDirty = true;
         learnedByFirstTime = isCorrect;
