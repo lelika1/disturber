@@ -77,8 +77,8 @@ int DataBase::SelectAllEntries(std::vector<StudyEntry> &entries) {
 int DataBase::UpdateEntries(const std::vector<StudyEntry> &entries) {
     for (auto &entry : entries) {
         if (entry.isDirty) {
-            QString update_str = "UPDATE DICTIONARY SET PROGRESS='%1' WHERE ID='%2';";
-            update_str = update_str.arg(entry.successRate).arg(entry.id);
+            QString update_str = "UPDATE DICTIONARY SET PROGRESS='%1', LASTDATE='%2'  WHERE ID='%3';";
+            update_str = update_str.arg(entry.successRate).arg(entry.lastTestDate).arg(entry.id);
             qDebug() << update_str << "\n";
 
             QSqlQuery update_query;

@@ -1,5 +1,7 @@
 ﻿#include "teacher.h"
 
+#include <ctime>
+
 const int KWordsPerStudy = 2;
 const int KSuccessRate = 3;
 
@@ -39,6 +41,7 @@ bool Teacher::CheckResult(bool ruToDeDirection, const QString &answer, QString &
         }
         entries[currentPairIndex].successRate *= (1.0 * (KSuccessRate - 1) / KSuccessRate);
         entries[currentPairIndex].successRate += (1.0 / KSuccessRate) * ((isCorrect) ? 1 : 0);
+        entries[currentPairIndex].lastTestDate = std::time(nullptr);
         entries[currentPairIndex].isDirty = true;
         learnedByFirstTime = isCorrect;
     }
@@ -54,4 +57,5 @@ bool Teacher::CheckResult(bool ruToDeDirection, const QString &answer, QString &
 
 void Teacher::UpdateDBAfterStudy() {
     db->UpdateEntries(entries);
+    entries.clear();
 }
