@@ -124,3 +124,26 @@ int DataBase::ExportDictionaryToCSV(QString &csvPath) {
     return 0;
 }
 
+int DataBase::ImportDictionaryFromCSV(const QString &csvPath) {
+    QFile file(csvPath);
+    file.open(QFile::ReadOnly);
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+        auto line = in.readLine().split(",");
+        if (line.size() != 2) {
+            qDebug() << "Incorrect line "<< line;
+            break;
+        }
+
+        QString add_str = "INSERT INTO DICTIONARY(RU,DE) SELECT '%1', '%2' WHERE NOT EXISTS(SELECT 1 FROM DICTIONARY WHERE RU='%1' and de='%2');";
+        add_str = add_str.arg(line[0]).arg(line[1]);
+        qDebug() << add_str << "\n";
+        QSqlQuery add_query;
+        if (!add_query.exec(add_str)) {
+            qDebug() << "Add entry failed. Error:" << sdb.lastError().text() << "\n";
+        }
+    }
+
+    file.close();
+    return 0;
+}

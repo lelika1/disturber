@@ -3,7 +3,7 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
-
+#include <QFileDialog>
 #include <QMessageBox>
 
 StartWindow::StartWindow(DataBase *_db, QWidget *parent)
@@ -57,5 +57,13 @@ void StartWindow::on_actionDictionary_CSV_triggered() {
 
     QMessageBox msgBox;
     msgBox.setText(QString("Dictionary was exported to file: %1").arg(csvPath));
+    msgBox.exec();
+}
+
+void StartWindow::on_actionCSV_Dictionary_triggered() {
+    QString csvFilePath = QFileDialog::getOpenFileName(this, tr("Load CSV"), ".", tr("CSV file (*.csv)"));
+    db->ImportDictionaryFromCSV(csvFilePath);
+    QMessageBox msgBox;
+    msgBox.setText(QString("CSV was imported to Dictionary"));
     msgBox.exec();
 }

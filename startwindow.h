@@ -34,6 +34,8 @@ private slots:
 
     void on_actionDictionary_CSV_triggered();
 
+    void on_actionCSV_Dictionary_triggered();
+
 private:
     Ui::StartWindow *ui;
     AddWordsWindow add_pair_form;

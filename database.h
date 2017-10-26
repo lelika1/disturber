@@ -40,6 +40,7 @@ public:
     void LoadEntriesWithFilter(QSqlTableModel *model, const QString &wordPart);
 
     int ExportDictionaryToCSV(QString &csvPath);
+    int ImportDictionaryFromCSV(const QString &csvPath);
 
 public:
     QSqlDatabase sdb;
