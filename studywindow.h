@@ -1,7 +1,9 @@
 #ifndef STUDYWINDOW_H
 #define STUDYWINDOW_H
 
+#include "database.h"
 #include "teacher.h"
+#include <memory>
 
 #include <QWidget>
 
@@ -20,25 +22,23 @@ public:
     void Show();
 
 private slots:
-    void on_printAeButton_clicked();
-
-    void on_printOeButton_clicked();
-
-    void on_printUeButton_clicked();
-
-    void on_printSsButton_clicked();
-
     void on_checkButton_clicked();
-
+    void on_printAeButton_clicked();
+    void on_printOeButton_clicked();
+    void on_printUeButton_clicked();
+    void on_printSsButton_clicked();
     void on_ru_deButton_clicked();
-
     void on_de_ruButton_clicked();
 
 private:
-    Ui::StudyWindow *ui;
+    // Returns true if there is at least one pair of words left for studying.
+    bool UpdateUI();
 
-    bool ruToDeDirection;
-    Teacher teacher;
+private:
+    Ui::StudyWindow *ui;
+    DataBase *db_;
+
+    std::unique_ptr<Teacher> teacher_;
 };
 
 #endif // STUDYWINDOW_H

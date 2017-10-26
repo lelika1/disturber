@@ -7,56 +7,47 @@ Configurator &config = Configurator::Instance();
 
 Teacher::Teacher(DataBase *_db)
     : db(_db)
+    , ruToDe(true)
     , currentPairIndex(0)
     , learnedByFirstTime(true)
-    , successWordsInStudy(0)
-{}
-
-Teacher::~Teacher() {}
-
-bool Teacher::InitStudy() {
+{
     db->SelectAllEntries(entries);
     std::sort(begin(entries), end(entries),
-              [](StudyEntry first, StudyEntry second){return first.successRate < second.successRate;});
-
-    currentPairIndex = 0;
-    successWordsInStudy = 0;
-    return entries.size() != 0;
+              [](const StudyEntry &first, const StudyEntry &second){return first.successRate < second.successRate;});
 }
 
-bool Teacher::GetNewPair(bool ruToDeDirection, QString& originalWord) {
-    if (currentPairIndex == entries.size() || successWordsInStudy == config.GetWordsCountPerTraining()) {
-        return false;
+Teacher::~Teacher() {
+    db->UpdateEntries(entries);
+}
+
+const QString* Teacher::GetWord() const {
+    if (currentPairIndex >= entries.size() || currentPairIndex >= config.GetWordsCountPerTraining()) {
+        return nullptr;
     }
-    originalWord = (ruToDeDirection) ? entries[currentPairIndex].ruWord : entries[currentPairIndex].deWord;
-    return true;
+    const auto &currentPair = entries[currentPairIndex];
+    return (ruToDe) ? &currentPair.ruWord : &currentPair.deWord;
 }
 
-bool Teacher::CheckResult(bool ruToDeDirection, const QString &answer, QString &correctAnswer) {
-    correctAnswer = (ruToDeDirection) ? entries[currentPairIndex].deWord : entries[currentPairIndex].ruWord;
+bool Teacher::CheckResult(const QString &answer, QString &correctAnswer) {
+    auto& entry = entries[currentPairIndex];
+    correctAnswer = (ruToDe) ? entry.deWord : entry.ruWord;
     bool isCorrect = (answer == correctAnswer);
 
     if (learnedByFirstTime) {
-        if (entries[currentPairIndex].successRate == 0) {
-             entries[currentPairIndex].successRate = 1;
+        if (entry.successRate == 0) {
+             entry.successRate = 1;
         }
-        entries[currentPairIndex].successRate *= (1.0 * (config.GetSuccessRate() - 1) / config.GetSuccessRate());
-        entries[currentPairIndex].successRate += (1.0 / config.GetSuccessRate()) * ((isCorrect) ? 1 : 0);
-        entries[currentPairIndex].lastTestDate = std::time(nullptr);
-        entries[currentPairIndex].isDirty = true;
+        entry.successRate *= (1.0 * (config.GetSuccessRate() - 1) / config.GetSuccessRate());
+        entry.successRate += (1.0 / config.GetSuccessRate()) * ((isCorrect) ? 1 : 0);
+        entry.lastTestDate = std::time(nullptr);
+        entry.isDirty = true;
         learnedByFirstTime = isCorrect;
     }
 
     if (isCorrect) {
-        ++successWordsInStudy;
         ++currentPairIndex;
         learnedByFirstTime = true;
     }
 
     return isCorrect;
-}
-
-void Teacher::UpdateDBAfterStudy() {
-    db->UpdateEntries(entries);
-    entries.clear();
 }

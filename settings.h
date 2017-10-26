@@ -7,41 +7,40 @@ class Configurator {
 public:
     static Configurator& Instance()
     {
-        static Configurator config;
-        return config;
+        static Configurator *config = new Configurator;
+        return *config;
     }
+
+
+    Configurator(Configurator const&) = delete;
+    Configurator& operator= (Configurator const&) = delete;
 
 public:
     void LoadConfigFromFile(const QString &path);
     void SaveConfigToFile();
 
-    int GetPeriodBetweenTrainigs() { return periodBetweenTrainings; }
-    void SetPeriodBetweenTrainigs(int period) { periodBetweenTrainings = period; }
+    size_t GetPeriodBetweenTrainigs() { return periodBetweenTrainings; }
+    void SetPeriodBetweenTrainigs(size_t period) { periodBetweenTrainings = period; }
 
-    int GetWordsCountPerTraining() { return wordsPerTraining; }
-    void SetWordsCountPerTraining(int count) { wordsPerTraining = count; }
+    size_t GetWordsCountPerTraining() { return wordsPerTraining; }
+    void SetWordsCountPerTraining(size_t count) { wordsPerTraining = count; }
 
-    int GetSuccessRate() { return successRate; }
-    void SetSuccessRate(int rate) { successRate = rate; }
+    size_t GetSuccessRate() { return successRate; }
+    void SetSuccessRate(size_t rate) { successRate = rate; }
 
-    int GetPercentOfOldWordsPerTraining() { return percentageOfOldWords; }
-    void SetPercentOfOldWordsPerTraining(int percent) { percentageOfOldWords = percent; }
+    size_t GetPercentOfOldWordsPerTraining() { return percentageOfOldWords; }
+    void SetPercentOfOldWordsPerTraining(size_t percent) { percentageOfOldWords = percent; }
 
 private:
-    int periodBetweenTrainings;
-    int wordsPerTraining;
-    int successRate;
-    int percentageOfOldWords;
+    size_t periodBetweenTrainings;
+    size_t wordsPerTraining;
+    size_t successRate;
+    size_t percentageOfOldWords;
     QString configPath;
 
 private:
     Configurator();
-    ~Configurator() {}
-
-    Configurator(Configurator const&) = delete;
-    Configurator& operator= (Configurator const&) = delete;
 };
-
 
 namespace Ui {
 class Settings;

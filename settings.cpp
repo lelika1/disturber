@@ -61,10 +61,10 @@ void Settings::Show() {
 
 void Settings::on_saveButton_clicked() {
     Configurator &config = Configurator::Instance();
-    config.SetPeriodBetweenTrainigs(ui->timePeriodBox->value());
-    config.SetWordsCountPerTraining(ui->wordsCountBox->value());
-    config.SetSuccessRate(ui->successRateBox->value());
-    config.SetPercentOfOldWordsPerTraining(ui->oldWordsPercentageBox->value());
+    config.SetPeriodBetweenTrainigs(static_cast<size_t>(ui->timePeriodBox->value()));
+    config.SetWordsCountPerTraining(static_cast<size_t>(ui->wordsCountBox->value()));
+    config.SetSuccessRate(static_cast<size_t>(ui->successRateBox->value()));
+    config.SetPercentOfOldWordsPerTraining(static_cast<size_t>(ui->oldWordsPercentageBox->value()));
     config.SaveConfigToFile();
     close();
 }

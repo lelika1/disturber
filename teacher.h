@@ -11,17 +11,20 @@ public:
     ~Teacher();
 
 public:
-    bool InitStudy();
-    bool GetNewPair(bool ruToDeDirection, QString &originalWord);
-    bool CheckResult(bool ruToDeDirection, const QString &answer, QString &correctAnswer);
+    const QString* GetWord() const;
+    bool CheckResult(const QString &answer, QString &correctAnswer);
 
-    void UpdateDBAfterStudy();
+    bool RuToDe() const {return ruToDe; }
+    void SetRuToDe(bool val) { ruToDe = val; }
 
 private:
     DataBase *db;
+
+    bool ruToDe;
+
     size_t currentPairIndex;
     bool learnedByFirstTime;
-    size_t successWordsInStudy;
+
     std::vector<StudyEntry> entries;
 };
 
