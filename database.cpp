@@ -45,7 +45,7 @@ DataBase::~DataBase() {
 }
 
 int DataBase::AddEntry(const QString &ru_word, const QString &de_word) {
-    QString add_str = "INSERT INTO DICTIONARY (RU,DE) VALUES ('%1', '%2');";
+    QString add_str = "INSERT INTO DICTIONARY (RU,DE) SELECT '%1', '%2' WHERE NOT EXISTS(SELECT 1 FROM DICTIONARY WHERE RU='%1' and de='%2');";
     add_str = add_str.arg(ru_word).arg(de_word);
     qDebug() << add_str << "\n";
     QSqlQuery add_query;
