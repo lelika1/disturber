@@ -62,6 +62,10 @@ void StartWindow::on_actionDictionary_CSV_triggered() {
 
 void StartWindow::on_actionCSV_Dictionary_triggered() {
     QString csvFilePath = QFileDialog::getOpenFileName(this, tr("Load CSV"), ".", tr("CSV file (*.csv)"));
+    if (csvFilePath.size() == 0) {
+        return;
+    }
+
     db->ImportDictionaryFromCSV(csvFilePath);
     QMessageBox msgBox;
     msgBox.setText(QString("CSV was imported to Dictionary"));

@@ -22,6 +22,7 @@ DictionaryWindow::~DictionaryWindow() {
 }
 
 void DictionaryWindow::ShowTable() {
+    ui->findEdit->setText("");
     this->show();
     db->LoadAllEntriesToModel(sql_model);
     ui->dictTableView->hideColumn(0);
