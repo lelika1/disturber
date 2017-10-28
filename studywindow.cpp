@@ -13,8 +13,7 @@ StudyWindow::StudyWindow(DataBase *db, QWidget *parent)
     this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint );
 }
 
-StudyWindow::~StudyWindow()
-{
+StudyWindow::~StudyWindow() {
     delete ui;
 }
 
@@ -32,8 +31,7 @@ void StudyWindow::Show() {
     teacher_ = nullptr;
 }
 
-void StudyWindow::on_checkButton_clicked()
-{
+void StudyWindow::on_checkButton_clicked() {
     QString currentAnswer = ui->toWordEdit->text().simplified();
 
     QString correctAnswer;
@@ -53,38 +51,32 @@ void StudyWindow::on_checkButton_clicked()
     close();
 }
 
-void StudyWindow::on_printAeButton_clicked()
-{
+void StudyWindow::on_printAeButton_clicked() {
     ui->toWordEdit->insert(ui->printAeButton->text().simplified());
     ui->toWordEdit->setFocus();
 }
 
-void StudyWindow::on_printOeButton_clicked()
-{
+void StudyWindow::on_printOeButton_clicked() {
     ui->toWordEdit->insert(ui->printOeButton->text().simplified());
     ui->toWordEdit->setFocus();
 }
 
-void StudyWindow::on_printUeButton_clicked()
-{
+void StudyWindow::on_printUeButton_clicked() {
     ui->toWordEdit->insert(ui->printUeButton->text().simplified());
     ui->toWordEdit->setFocus();
 }
 
-void StudyWindow::on_printSsButton_clicked()
-{
+void StudyWindow::on_printSsButton_clicked() {
     ui->toWordEdit->insert(ui->printSsButton->text().simplified());
     ui->toWordEdit->setFocus();
 }
 
-void StudyWindow::on_ru_deButton_clicked()
-{
+void StudyWindow::on_ru_deButton_clicked() {
     teacher_->SetRuToDe(true);
     UpdateUI();
 }
 
-void StudyWindow::on_de_ruButton_clicked()
-{
+void StudyWindow::on_de_ruButton_clicked() {
     teacher_->SetRuToDe(false);
     UpdateUI();
 }

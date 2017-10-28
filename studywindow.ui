@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>360</width>
-    <height>205</height>
+    <width>500</width>
+    <height>138</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,185 +21,184 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>360</width>
-    <height>205</height>
+    <width>500</width>
+    <height>138</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>360</width>
-    <height>205</height>
+    <width>500</width>
+    <height>138</height>
    </size>
   </property>
   <property name="cursor">
    <cursorShape>ArrowCursor</cursorShape>
   </property>
   <property name="windowTitle">
-   <string>Study window</string>
+   <string>Study session</string>
   </property>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>20</y>
-     <width>331</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_3">
-    <item>
-     <widget class="QLabel" name="label_3">
-      <property name="text">
-       <string>Choose direction:</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QRadioButton" name="ru_deButton">
-      <property name="text">
-       <string>Ru-&gt;De</string>
-      </property>
-      <property name="checked">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QRadioButton" name="de_ruButton">
-      <property name="text">
-       <string>De-&gt;Ru</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>60</y>
-     <width>342</width>
-     <height>121</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout_3">
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <widget class="QLabel" name="fromLabel">
-          <property name="text">
-           <string>Russian word</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="toLabel">
-          <property name="text">
-           <string>German word</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="QLabel" name="fromWordLabel">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::Box</enum>
-          </property>
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="textFormat">
-           <enum>Qt::PlainText</enum>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="toWordEdit"/>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QPushButton" name="checkButton">
-        <property name="text">
-         <string>Check</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QPushButton" name="printAeButton">
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-          <italic>true</italic>
-         </font>
-        </property>
-        <property name="text">
-         <string>ä</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="printOeButton">
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-          <italic>true</italic>
-         </font>
-        </property>
-        <property name="text">
-         <string>ö</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="printUeButton">
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-          <italic>true</italic>
-         </font>
-        </property>
-        <property name="text">
-         <string>ü</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="printSsButton">
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-          <italic>true</italic>
-         </font>
-        </property>
-        <property name="text">
-         <string>ß</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-   </layout>
-  </widget>
+  <layout class="QVBoxLayout" name="verticalLayout_4">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Choose direction:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="ru_deButton">
+       <property name="text">
+        <string>Ru-&gt;De</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="de_ruButton">
+       <property name="text">
+        <string>De-&gt;Ru</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QLabel" name="fromLabel">
+           <property name="text">
+            <string>Russian word</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="toLabel">
+           <property name="text">
+            <string>German word</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QLabel" name="fromWordLabel">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Box</enum>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::PlainText</enum>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="toWordEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QPushButton" name="checkButton">
+         <property name="text">
+          <string>Check</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="printAeButton">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <italic>true</italic>
+          </font>
+         </property>
+         <property name="text">
+          <string>ä</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="printOeButton">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <italic>true</italic>
+          </font>
+         </property>
+         <property name="text">
+          <string>ö</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="printUeButton">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <italic>true</italic>
+          </font>
+         </property>
+         <property name="text">
+          <string>ü</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="printSsButton">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <italic>true</italic>
+          </font>
+         </property>
+         <property name="text">
+          <string>ß</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

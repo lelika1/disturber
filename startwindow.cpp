@@ -9,7 +9,6 @@
 StartWindow::StartWindow(DataBase *_db, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::StartWindow)
-    , add_pair_form(_db)
     , dictionary_form(_db)
     , study_form(_db)
     , db(_db)
@@ -21,19 +20,6 @@ StartWindow::~StartWindow() {
     delete ui;
 }
 
-void StartWindow::on_addButton_clicked() {
-    QRect wGeom = this->geometry();
-    add_pair_form.setGeometry(QRect(wGeom.x(), wGeom.y(),
-                                    add_pair_form.geometry().width(),
-                                    add_pair_form.geometry().height()));
-    add_pair_form.show();
-}
-
-void StartWindow::on_editButton_clicked() {
-    QRect screenGeometry = QApplication::desktop()->screenGeometry();
-    dictionary_form.setGeometry(screenGeometry);
-    dictionary_form.ShowTable();
-}
 
 void StartWindow::on_studyButton_clicked() {
     QRect wGeom = this->geometry();
@@ -43,24 +29,20 @@ void StartWindow::on_studyButton_clicked() {
     study_form.Show();
 }
 
-void StartWindow::on_settingsButton_clicked() {
+void StartWindow::on_action_Options_triggered() {
     QRect wGeom = this->geometry();
-    setting_form.setGeometry(QRect(wGeom.x(), wGeom.y(),
-                             setting_form.geometry().width(),
-                             setting_form.geometry().height()));
-    setting_form.Show();
+    options_form.setGeometry(QRect(wGeom.x(), wGeom.y(),
+                             options_form.geometry().width(),
+                             options_form.geometry().height()));
+    options_form.Show();
 }
 
-void StartWindow::on_actionDictionary_CSV_triggered() {
-    QString csvPath;
-    db->ExportDictionaryToCSV(csvPath);
-
-    QMessageBox msgBox;
-    msgBox.setText(QString("Dictionary was exported to file: %1").arg(csvPath));
-    msgBox.exec();
+void StartWindow::on_actionEdit_dictionary_triggered() {
+    dictionary_form.setGeometry(QApplication::desktop()->screenGeometry());
+    dictionary_form.Show();
 }
 
-void StartWindow::on_actionCSV_Dictionary_triggered() {
+void StartWindow::on_actionImport_triggered() {
     QString csvFilePath = QFileDialog::getOpenFileName(this, tr("Load CSV"), ".", tr("CSV file (*.csv)"));
     if (csvFilePath.size() == 0) {
         return;
@@ -69,5 +51,14 @@ void StartWindow::on_actionCSV_Dictionary_triggered() {
     db->ImportDictionaryFromCSV(csvFilePath);
     QMessageBox msgBox;
     msgBox.setText(QString("CSV was imported to Dictionary"));
+    msgBox.exec();
+}
+
+void StartWindow::on_actionExport_triggered() {
+    QString csvPath;
+    db->ExportDictionaryToCSV(csvPath);
+
+    QMessageBox msgBox;
+    msgBox.setText(QString("Dictionary was exported to file: %1").arg(csvPath));
     msgBox.exec();
 }

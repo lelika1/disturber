@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>All Dictionary</string>
+   <string>Dictionary</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="sizeConstraint">
@@ -31,7 +31,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Input part of word:</string>
+        <string>Search:</string>
        </property>
       </widget>
      </item>
@@ -63,11 +63,18 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="QPushButton" name="deleteRowButton">
+      <widget class="QPushButton" name="addWordsButton">
        <property name="text">
-        <string>Delete Row</string>
+        <string>Add Words</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="deleteWordsButton">
+       <property name="text">
+        <string>Delete Words</string>
        </property>
       </widget>
      </item>

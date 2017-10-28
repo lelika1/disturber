@@ -32,49 +32,30 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>LangLearn</string>
+   <string>Der Distürber</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>10</y>
-      <width>201</width>
-      <height>201</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QPushButton" name="studyButton">
-       <property name="text">
-        <string>Study</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="addButton">
-       <property name="text">
-        <string>Add New Words</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="editButton">
-       <property name="text">
-        <string>Edit Dictionary</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="settingsButton">
-       <property name="text">
-        <string>Settings</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QPushButton" name="studyButton">
+      <property name="minimumSize">
+       <size>
+        <width>161</width>
+        <height>161</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>161</width>
+        <height>161</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Study</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -87,29 +68,43 @@
    </property>
    <widget class="QMenu" name="menuDictionary_CSV">
     <property name="title">
-     <string>Dictionary</string>
+     <string>&amp;File</string>
     </property>
-    <addaction name="actionDictionary_CSV"/>
-    <addaction name="actionCSV_Dictionary"/>
+    <addaction name="actionImport"/>
+    <addaction name="actionExport"/>
+   </widget>
+   <widget class="QMenu" name="menu_Tools">
+    <property name="title">
+     <string>&amp;Tools</string>
+    </property>
+    <addaction name="actionEdit_dictionary"/>
+    <addaction name="separator"/>
+    <addaction name="action_Options"/>
    </widget>
    <addaction name="menuDictionary_CSV"/>
+   <addaction name="menu_Tools"/>
   </widget>
-  <action name="actionF">
+  <action name="actionExport">
    <property name="text">
-    <string>f</string>
-   </property>
-  </action>
-  <action name="actionDictionary_CSV">
-   <property name="text">
-    <string>Dictionary -&gt; CSV</string>
+    <string>&amp;Export to CSV</string>
    </property>
    <property name="toolTip">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Export Dictionary to CSV file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
-  <action name="actionCSV_Dictionary">
+  <action name="actionImport">
    <property name="text">
-    <string>CSV -&gt; Dictionary</string>
+    <string>&amp;Add words from file</string>
+   </property>
+  </action>
+  <action name="actionEdit_dictionary">
+   <property name="text">
+    <string>Edit &amp;dictionary</string>
+   </property>
+  </action>
+  <action name="action_Options">
+   <property name="text">
+    <string>&amp;Options...</string>
    </property>
   </action>
  </widget>

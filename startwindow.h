@@ -1,7 +1,6 @@
 #ifndef STARTWINDOW_H
 #define STARTWINDOW_H
 
-#include "addwordswindow.h"
 #include "database.h"
 #include "dictionarywindow.h"
 #include "settings.h"
@@ -24,23 +23,17 @@ public:
     ~StartWindow();
 
 private slots:
-    void on_addButton_clicked();
-
-    void on_editButton_clicked();
-
     void on_studyButton_clicked();
 
-    void on_settingsButton_clicked();
-
-    void on_actionDictionary_CSV_triggered();
-
-    void on_actionCSV_Dictionary_triggered();
+    void on_action_Options_triggered();
+    void on_actionEdit_dictionary_triggered();
+    void on_actionImport_triggered();
+    void on_actionExport_triggered();
 
 private:
     Ui::StartWindow *ui;
-    AddWordsWindow add_pair_form;
     DictionaryWindow dictionary_form;
-    Settings setting_form;
+    Settings options_form;
     StudyWindow study_form;
     DataBase *db;
 };

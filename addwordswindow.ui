@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>365</width>
-    <height>160</height>
+    <width>430</width>
+    <height>113</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,44 +19,19 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="minimumSize">
-   <size>
-    <width>365</width>
-    <height>160</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>365</width>
-    <height>160</height>
-   </size>
-  </property>
   <property name="windowTitle">
-   <string>Add new words</string>
+   <string>Enter new words</string>
   </property>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>342</width>
-     <height>131</height>
+     <width>411</width>
+     <height>93</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QLabel" name="label_3">
-      <property name="font">
-       <font>
-        <pointsize>14</pointsize>
-        <italic>true</italic>
-       </font>
-      </property>
-      <property name="text">
-       <string>Input new words:</string>
-      </property>
-     </widget>
-    </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>

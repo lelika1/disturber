@@ -2,6 +2,7 @@
 #define DICTIONARYWINDOW_H
 
 #include "database.h"
+#include "addwordswindow.h"
 #include <QWidget>
 
 namespace Ui {
@@ -19,17 +20,19 @@ public:
     ~DictionaryWindow();
 
 public:
-    void ShowTable();
+    void Show();
 
 private slots:
-    void on_deleteRowButton_clicked();
-
     void on_findEdit_textChanged(const QString &arg1);
+    void on_deleteWordsButton_clicked();
+    void on_addWordsButton_clicked();
 
 private:
     Ui::DictionaryWindow *ui;
     DataBase *db;
     QSqlTableModel *sql_model;
+
+    AddWordsWindow add_words_form;
 };
 
 #endif // DICTIONARYWINDOW_H
