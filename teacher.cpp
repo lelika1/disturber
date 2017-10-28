@@ -16,9 +16,7 @@ Teacher::Teacher(DataBase *_db)
               [](const StudyEntry &first, const StudyEntry &second){return first.successRate < second.successRate;});
 }
 
-Teacher::~Teacher() {
-    db->UpdateEntries(entries);
-}
+Teacher::~Teacher() {}
 
 const QString* Teacher::GetWord() const {
     if (currentPairIndex >= entries.size() || currentPairIndex >= config.GetWordsCountPerTraining()) {
@@ -40,11 +38,11 @@ bool Teacher::CheckResult(const QString &answer, QString &correctAnswer) {
         entry.successRate *= (1.0 * (config.GetSuccessRate() - 1) / config.GetSuccessRate());
         entry.successRate += (1.0 / config.GetSuccessRate()) * ((isCorrect) ? 1 : 0);
         entry.lastTestDate = std::time(nullptr);
-        entry.isDirty = true;
         learnedByFirstTime = isCorrect;
     }
 
     if (isCorrect) {
+        db->UpdateEntry(entry);
         ++currentPairIndex;
         learnedByFirstTime = true;
     }

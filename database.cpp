@@ -12,7 +12,6 @@ StudyEntry::StudyEntry(int _id, const QString &ru, const QString &de,
     , lastTestDate(lastTime)
     , successRate(rate)
     , showAfterDate(showDate)
-    , isDirty(false)
 {}
 
 DataBase::DataBase(const QString &db_name) {
@@ -74,19 +73,15 @@ int DataBase::SelectAllEntries(std::vector<StudyEntry> &entries) {
     return 0;
 }
 
-int DataBase::UpdateEntries(const std::vector<StudyEntry> &entries) {
-    for (auto &entry : entries) {
-        if (entry.isDirty) {
-            QString update_str = "UPDATE DICTIONARY SET PROGRESS='%1', LASTDATE='%2'  WHERE ID='%3';";
-            update_str = update_str.arg(entry.successRate).arg(entry.lastTestDate).arg(entry.id);
-            qDebug() << update_str << "\n";
+int DataBase::UpdateEntry(const StudyEntry &entry) {
+    QString update_str = "UPDATE DICTIONARY SET PROGRESS='%1', LASTDATE='%2'  WHERE ID='%3';";
+    update_str = update_str.arg(entry.successRate).arg(entry.lastTestDate).arg(entry.id);
+    qDebug() << update_str << "\n";
 
-            QSqlQuery update_query;
-            if (!update_query.exec(update_str)) {
-                qDebug() << "Update entry failed. Error:" << sdb.lastError().text() << "\n";
-                return 1;
-            }
-        }
+    QSqlQuery update_query;
+    if (!update_query.exec(update_str)) {
+        qDebug() << "Update entry failed. Error:" << sdb.lastError().text() << "\n";
+        return 1;
     }
     return 0;
 }

@@ -12,7 +12,6 @@ struct StudyEntry {
     int lastTestDate;
     double successRate;
     int showAfterDate;
-    bool isDirty;
 
     StudyEntry(int _id, const QString &ru, const QString &de,
                int lastTime = 0, double rate = 0, int showDate = 0);
@@ -34,7 +33,7 @@ public:
 public:
     int AddEntry(const QString &ru_word, const QString &de_word);
     int SelectAllEntries(std::vector<StudyEntry> &entries);
-    int UpdateEntries(const std::vector<StudyEntry> &entries);
+    int UpdateEntry(const StudyEntry &entries);
 
     void LoadAllEntriesToModel(QSqlTableModel *model);
     void LoadEntriesWithFilter(QSqlTableModel *model, const QString &wordPart);
