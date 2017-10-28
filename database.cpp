@@ -2,7 +2,26 @@
 #include <exception>
 #include <iostream>
 
+namespace {
 
+int AddEntries(const QVariantList &ru_words, const QVariantList &de_words) {
+    QSqlQuery q;
+    q.prepare("INSERT INTO DICTIONARY (RU, DE)"
+              " SELECT ?, ? WHERE NOT EXISTS"
+              " (SELECT 1 FROM DICTIONARY WHERE ru = ? and de = ?)"
+              ";");
+    q.addBindValue(ru_words);
+    q.addBindValue(de_words);
+    q.addBindValue(ru_words);
+    q.addBindValue(de_words);
+    if (!q.execBatch()) {
+        qDebug() << "AddEntries() failed:" << q.lastError().text();
+        return 1;
+    }
+    return 0;
+}
+
+}
 
 StudyEntry::StudyEntry(int _id, const QString &ru, const QString &de,
                        int lastTime, double rate, int showDate)
@@ -19,22 +38,22 @@ DataBase::DataBase(const QString &db_name) {
     sdb.setDatabaseName(db_name);
 
     if (!sdb.open()) {
-        qDebug() << "Open database failed. Error:" << sdb.lastError().text() << "\n";
+        qDebug() << "Open database failed. Error:" << sdb.lastError().text();
         throw DBCreateException();
     }
 
-    QString kCreateTableSql = "CREATE TABLE IF NOT EXISTS DICTIONARY("                      \
-                              "ID           INTEGER   PRIMARY KEY   AUTOINCREMENT NOT NULL,"\
-                              "RU           TEXT                                  NOT NULL,"\
-                              "DE           TEXT                                  NOT NULL,"\
-                              "LASTDATE     INTEGER   DEFAULT 0,"                           \
-                              "PROGRESS     REAL      DEFAULT 0.0,"                         \
+    QString kCreateTableSql = "CREATE TABLE IF NOT EXISTS DICTIONARY("
+                              "ID           INTEGER   PRIMARY KEY   AUTOINCREMENT NOT NULL,"
+                              "RU           TEXT                                  NOT NULL,"
+                              "DE           TEXT                                  NOT NULL,"
+                              "LASTDATE     INTEGER   DEFAULT 0,"
+                              "PROGRESS     REAL      DEFAULT 0.5,"
                               "SHOWAFTER    INTEGER   DEFAULT 0);";
 
-    QSqlQuery create_query;
-    if (!create_query.exec(kCreateTableSql)) {
+    QSqlQuery q;
+    if (!q.exec(kCreateTableSql)) {
         sdb.close();
-        std::cerr << "Create Table failed. Error:" << sdb.lastError().text().toStdString() << std::endl;
+        std::cerr << "Create Table failed. Error:" << q.lastError().text().toStdString() << std::endl;
         throw DBCreateException();
     }
 }
@@ -44,43 +63,75 @@ DataBase::~DataBase() {
 }
 
 int DataBase::AddEntry(const QString &ru_word, const QString &de_word) {
-    QString add_str = "INSERT INTO DICTIONARY (RU,DE) SELECT '%1', '%2' WHERE NOT EXISTS(SELECT 1 FROM DICTIONARY WHERE RU='%1' and de='%2');";
-    add_str = add_str.arg(ru_word).arg(de_word);
-    qDebug() << add_str << "\n";
-    QSqlQuery add_query;
-    if (!add_query.exec(add_str)) {
-        qDebug() << "Add entry failed. Error:" << sdb.lastError().text() << "\n";
+    QVariantList ru_words;
+    ru_words << ru_word;
+    QVariantList de_words;
+    de_words << de_word;
+    return AddEntries(ru_words, de_words);
+}
+
+int DataBase::SelectByIds(const std::set<int> &ids, std::vector<StudyEntry> &out) {
+    QStringList idstrings;
+    for (int id : ids) {
+        idstrings << QString::number(id);
+    }
+    QString numberlist = idstrings.join(",");
+
+    QSqlQuery q;
+    q.prepare("SELECT * FROM DICTIONARY WHERE ID in (" + numberlist + ");");
+
+    if (!q.exec()) {
+        qDebug() << "SelectByIds() failed:" << q.lastError().text();
         return 1;
+    }
+    while (q.next()) {
+        out.emplace_back(StudyEntry(q.value(0).toInt(),
+                                    q.value(1).toString(),
+                                    q.value(2).toString(),
+                                    q.value(3).toInt(),
+                                    q.value(4).toDouble(),
+                                    q.value(5).toInt()));
     }
     return 0;
 }
 
-int DataBase::SelectAllEntries(std::vector<StudyEntry> &entries) {
-    QSqlQuery add_query;
-    if (!add_query.exec("SELECT * FROM DICTIONARY;")) {
-        qDebug() << "Select entries failed. Error:" << sdb.lastError().text() << "\n";
+int DataBase::SelectNOldest(size_t n, std::set<int> &ids) {
+    QSqlQuery q;
+    q.prepare("SELECT ID FROM DICTIONARY ORDER BY LASTDATE ASC LIMIT :N;");
+    q.bindValue(":N", static_cast<int>(n));
+    if (!q.exec()) {
+        qDebug() << "SelectNOldest(" << n << ") failed with: " << q.lastError().text();
         return 1;
     }
+    while (q.next()) {
+        ids.insert(q.value(0).toInt());
+    }
+    return 0;
+}
 
-    while (add_query.next()) {
-        entries.emplace_back(StudyEntry(add_query.value(0).toInt(),
-                                        add_query.value(1).toString(),
-                                        add_query.value(2).toString(),
-                                        add_query.value(3).toInt(),
-                                        add_query.value(4).toDouble(),
-                                        add_query.value(5).toInt()));
+int DataBase::SelectNWorstKnown(size_t n, std::set<int> &ids) {
+    QSqlQuery q;
+    q.prepare("SELECT ID FROM DICTIONARY ORDER BY PROGRESS ASC LIMIT :N;");
+    q.bindValue(":N", static_cast<int>(n));
+    if (!q.exec()) {
+        qDebug() << "SelectNWorstKnown(" << n << ") failed with: " << q.lastError().text();
+        return 1;
+    }
+    while (q.next()) {
+        ids.insert(q.value(0).toInt());
     }
     return 0;
 }
 
 int DataBase::UpdateEntry(const StudyEntry &entry) {
-    QString update_str = "UPDATE DICTIONARY SET PROGRESS='%1', LASTDATE='%2'  WHERE ID='%3';";
-    update_str = update_str.arg(entry.successRate).arg(entry.lastTestDate).arg(entry.id);
-    qDebug() << update_str << "\n";
+    QSqlQuery q;
+    q.prepare("UPDATE DICTIONARY SET PROGRESS=':progress', LASTDATE=':lastdate' WHERE ID=':id';");
+    q.addBindValue(entry.successRate);
+    q.addBindValue(entry.lastTestDate);
+    q.addBindValue(entry.id);
 
-    QSqlQuery update_query;
-    if (!update_query.exec(update_str)) {
-        qDebug() << "Update entry failed. Error:" << sdb.lastError().text() << "\n";
+    if (!q.exec()) {
+        qDebug() << "Update entry failed. Error:" << q.lastError().text();
         return 1;
     }
     return 0;
@@ -98,9 +149,9 @@ void DataBase::LoadEntriesWithFilter(QSqlTableModel *model, const QString &wordP
 }
 
 int DataBase::ExportDictionaryToCSV(QString &csvPath) {
-    QSqlQuery add_query;
-    if (!add_query.exec("SELECT RU, DE FROM DICTIONARY;")) {
-        qDebug() << "Select entries failed. Error:" << sdb.lastError().text() << "\n";
+    QSqlQuery q;
+    if (!q.exec("SELECT RU, DE FROM DICTIONARY;")) {
+        qDebug() << "Select entries failed. Error:" << q.lastError().text();
         return 1;
     }
 
@@ -110,9 +161,9 @@ int DataBase::ExportDictionaryToCSV(QString &csvPath) {
     fileWriter.open(QFile::WriteOnly | QFile::Truncate);
 
     QTextStream textStream(&fileWriter);
-    while (add_query.next()) {
-        QString ru = add_query.value(0).toString();
-        QString de = add_query.value(1).toString();
+    while (q.next()) {
+        QString ru = q.value(0).toString();
+        QString de = q.value(1).toString();
         textStream << ru << "," << de << '\n';
     }
     fileWriter.close();
@@ -123,22 +174,17 @@ int DataBase::ImportDictionaryFromCSV(const QString &csvPath) {
     QFile file(csvPath);
     file.open(QFile::ReadOnly);
     QTextStream in(&file);
+    QVariantList ru_words;
+    QVariantList de_words;
     while (!in.atEnd()) {
         auto line = in.readLine().split(",");
         if (line.size() != 2) {
             qDebug() << "Incorrect line "<< line;
             break;
         }
-
-        QString add_str = "INSERT INTO DICTIONARY(RU,DE) SELECT '%1', '%2' WHERE NOT EXISTS(SELECT 1 FROM DICTIONARY WHERE RU='%1' and de='%2');";
-        add_str = add_str.arg(line[0]).arg(line[1]);
-        qDebug() << add_str << "\n";
-        QSqlQuery add_query;
-        if (!add_query.exec(add_str)) {
-            qDebug() << "Add entry failed. Error:" << sdb.lastError().text() << "\n";
-        }
+        ru_words << line[0];
+        de_words << line[1];
     }
-
     file.close();
-    return 0;
+    return AddEntries(ru_words, de_words);
 }

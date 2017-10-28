@@ -11,9 +11,6 @@ Teacher::Teacher(DataBase *_db)
     , currentPairIndex(0)
     , learnedByFirstTime(true)
 {
-    db->SelectAllEntries(entries);
-    std::sort(begin(entries), end(entries),
-              [](const StudyEntry &first, const StudyEntry &second){return first.successRate < second.successRate;});
 }
 
 Teacher::~Teacher() {}

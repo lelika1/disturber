@@ -3,6 +3,7 @@
 #include <QString>
 #include <QtSql>
 
+#include <set>
 #include <vector>
 
 struct StudyEntry {
@@ -32,7 +33,13 @@ public:
 
 public:
     int AddEntry(const QString &ru_word, const QString &de_word);
-    int SelectAllEntries(std::vector<StudyEntry> &entries);
+    int SelectByIds(const std::set<int> &ids, std::vector<StudyEntry> &out);
+
+    // Adds ids for N most likely forgotten words to a given ids set.
+    int SelectNOldest(size_t n, std::set<int> &ids);
+    // Adds ids for N words with lowest rate to a given ids set.
+    int SelectNWorstKnown(size_t n, std::set<int> &ids);
+
     int UpdateEntry(const StudyEntry &entries);
 
     void LoadAllEntriesToModel(QSqlTableModel *model);
