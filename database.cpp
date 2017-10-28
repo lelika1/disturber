@@ -56,6 +56,9 @@ DataBase::DataBase(const QString &db_name) {
         std::cerr << "Create Table failed. Error:" << q.lastError().text().toStdString() << std::endl;
         throw DBCreateException();
     }
+    // The following instructions should speed-up db operations.
+    q.exec("PRAGMA synchronous = OFF");
+    q.exec("PRAGMA journal_mode = MEMORY");
 }
 
 DataBase::~DataBase() {
