@@ -33,7 +33,7 @@ public:
 
 public:
     int AddEntry(const QString &ru_word, const QString &de_word);
-    int SelectByIds(const std::set<int> &ids, std::vector<StudyEntry> &out);
+    int SelectByIds(const std::vector<int> &ids, std::vector<StudyEntry> &out);
 
     // Adds ids for N most likely forgotten words to a given ids set.
     int SelectNOldest(size_t n, std::set<int> &ids);

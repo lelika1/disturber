@@ -70,7 +70,7 @@ int DataBase::AddEntry(const QString &ru_word, const QString &de_word) {
     return AddEntries(ru_words, de_words);
 }
 
-int DataBase::SelectByIds(const std::set<int> &ids, std::vector<StudyEntry> &out) {
+int DataBase::SelectByIds(const std::vector<int> &ids, std::vector<StudyEntry> &out) {
     QStringList idstrings;
     for (int id : ids) {
         idstrings << QString::number(id);
@@ -125,10 +125,10 @@ int DataBase::SelectNWorstKnown(size_t n, std::set<int> &ids) {
 
 int DataBase::UpdateEntry(const StudyEntry &entry) {
     QSqlQuery q;
-    q.prepare("UPDATE DICTIONARY SET PROGRESS=':progress', LASTDATE=':lastdate' WHERE ID=':id';");
-    q.addBindValue(entry.successRate);
-    q.addBindValue(entry.lastTestDate);
-    q.addBindValue(entry.id);
+    q.prepare("UPDATE DICTIONARY SET PROGRESS = :progress, LASTDATE = :lastdate WHERE ID = :id;");
+    q.bindValue(":progress", entry.successRate);
+    q.bindValue(":lastdate", entry.lastTestDate);
+    q.bindValue(":id", entry.id);
 
     if (!q.exec()) {
         qDebug() << "Update entry failed. Error:" << q.lastError().text();

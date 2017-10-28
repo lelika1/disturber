@@ -8,7 +8,6 @@
 class Teacher {
 public:
     Teacher(DataBase *_db);
-    ~Teacher();
 
 public:
     const QString* GetWord() const;
@@ -16,6 +15,9 @@ public:
 
     bool RuToDe() const {return ruToDe; }
     void SetRuToDe(bool val) { ruToDe = val; }
+
+private:
+    void ReadStudyEntries(std::vector<StudyEntry> &entries_);
 
 private:
     DataBase *db;

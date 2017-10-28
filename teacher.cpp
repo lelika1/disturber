@@ -2,6 +2,7 @@
 #include "teacher.h"
 
 #include <ctime>
+#include <algorithm>
 
 Configurator &config = Configurator::Instance();
 
@@ -11,9 +12,26 @@ Teacher::Teacher(DataBase *_db)
     , currentPairIndex(0)
     , learnedByFirstTime(true)
 {
+    ReadStudyEntries(entries);
 }
 
-Teacher::~Teacher() {}
+void Teacher::ReadStudyEntries(std::vector<StudyEntry>& _entries) {
+    std::set<int> ids;
+    size_t totalWords = config.GetWordsCountPerTraining();
+    // We will try to select 2*N words and then select a random subset of N words from it.
+    size_t selectWords = 2 * totalWords;
+    size_t oldWords = (selectWords * config.GetPercentOfOldWordsPerTraining()) / 100;
+    size_t worstKnownWords = selectWords - oldWords;
+    db->SelectNOldest(oldWords, ids);
+    db->SelectNWorstKnown(worstKnownWords, ids);
+
+    std::vector<int> resultIds(ids.begin(), ids.end());
+    std::random_shuffle(resultIds.begin(), resultIds.end());
+    if (resultIds.size() > totalWords) {
+        resultIds.erase(resultIds.begin() + totalWords, resultIds.end());
+    }
+    db->SelectByIds(resultIds, _entries);
+}
 
 const QString* Teacher::GetWord() const {
     if (currentPairIndex >= entries.size() || currentPairIndex >= config.GetWordsCountPerTraining()) {
