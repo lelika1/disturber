@@ -19,7 +19,7 @@
   <property name="windowTitle">
    <string>Settings</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>22</x>
@@ -85,13 +85,13 @@
       <item>
        <widget class="QSpinBox" name="wordsCountBox">
         <property name="minimum">
-         <number>10</number>
+         <number>2</number>
         </property>
         <property name="maximum">
          <number>100</number>
         </property>
         <property name="singleStep">
-         <number>5</number>
+         <number>1</number>
         </property>
        </widget>
       </item>
