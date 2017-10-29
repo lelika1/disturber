@@ -45,7 +45,7 @@ public:
     void LoadAllEntriesToModel(QSqlTableModel *model);
     void LoadEntriesWithFilter(QSqlTableModel *model, const QString &wordPart);
 
-    int ExportDictionaryToCSV(QString &csvPath);
+    int ExportDictionaryToCSV(const QString &csvPath);
     int ImportDictionaryFromCSV(const QString &csvPath);
 
 public:

@@ -43,7 +43,7 @@ void StartWindow::on_actionEdit_dictionary_triggered() {
 }
 
 void StartWindow::on_actionImport_triggered() {
-    QString csvFilePath = QFileDialog::getOpenFileName(this, tr("Load CSV"), ".", tr("CSV file (*.csv)"));
+    QString csvFilePath = QFileDialog::getOpenFileName(this, tr("Load CSV"), ".", tr("Dictionary file (*.csv)"));
     if (csvFilePath.size() == 0) {
         return;
     }
@@ -55,10 +55,23 @@ void StartWindow::on_actionImport_triggered() {
 }
 
 void StartWindow::on_actionExport_triggered() {
-    QString csvPath;
-    db->ExportDictionaryToCSV(csvPath);
+    QString csvFilePath = QFileDialog::getSaveFileName(this, tr("Export Dictionary"), ".", tr("Dictionary (*.csv)"));
+    if (csvFilePath.size() == 0) {
+        return;
+    }
+
+    if (!csvFilePath.endsWith(".csv")) {
+        csvFilePath += ".csv";
+    }
+
+    if (db->ExportDictionaryToCSV(csvFilePath)) {
+        QMessageBox msgBox;
+        msgBox.setText(QString("Dictionary export to file %1 failed!").arg(csvFilePath));
+        msgBox.exec();
+        return;
+    }
 
     QMessageBox msgBox;
-    msgBox.setText(QString("Dictionary was exported to file: %1").arg(csvPath));
+    msgBox.setText(QString("Dictionary was exported to file: %1.").arg(csvFilePath));
     msgBox.exec();
 }

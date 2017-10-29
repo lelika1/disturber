@@ -151,15 +151,13 @@ void DataBase::LoadEntriesWithFilter(QSqlTableModel *model, const QString &wordP
     model->select();
 }
 
-int DataBase::ExportDictionaryToCSV(QString &csvPath) {
+int DataBase::ExportDictionaryToCSV(const QString &csvPath) {
     QSqlQuery q;
     if (!q.exec("SELECT RU, DE FROM DICTIONARY;")) {
         qDebug() << "Select entries failed. Error:" << q.lastError().text();
         return 1;
     }
 
-    QString currentTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_HH:mm");
-    csvPath = QDir::currentPath() + "/dictionary_" + currentTime + ".csv";
     QFile fileWriter(csvPath);
     fileWriter.open(QFile::WriteOnly | QFile::Truncate);
 
