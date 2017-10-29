@@ -1,0 +1,25 @@
+# This is a sample build configuration for C++ – Make.
+# Check our guides at https://confluence.atlassian.com/x/5Q4SMw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: gcc:6.1
+
+pipelines:
+  default:
+    - step:
+        script: 
+         - sudo add-apt-repository ppa:beineri/opt-qt591-trusty -y
+         - sudo apt-get update -qq
+         - sudo apt-get -y install qt59base
+         - source /opt/qt*/bin/qt*-env.sh
+         - qmake CONFIG+=release PREFIX=/usr
+         - make -j$(nproc)
+         - make INSTALL_ROOT=appdir -j$(nproc) install ; find appdir/
+         - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+         - chmod a+x linuxdeployqt*.AppImage
+         - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
+         - ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -bundle-non-qt-libs
+         - ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -appimage
+         - find ./appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq
+         - curl --upload-file ./APPNAME*.AppImage https://transfer.sh/APPNAME-git.$(git rev-parse --short HEAD)-x86_64.AppImage
