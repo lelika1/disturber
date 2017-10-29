@@ -60,12 +60,15 @@ void StartWindow::on_actionImport_triggered() {
 }
 
 void StartWindow::on_actionExport_triggered() {
-    QString csvFilePath = QFileDialog::getSaveFileName(this, tr("Export Dictionary"), ".", tr("Dictionary (*.csv)"));
+    QString currentTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_HH:mm");
+    QString defaultName = "./dictionary_" + currentTime + ".csv";
+
+    QString csvFilePath = QFileDialog::getSaveFileName(this, tr("Export Dictionary"), defaultName, tr("Dictionary (*.csv)"));
     if (csvFilePath.size() == 0) {
         return;
     }
 
-    if (!csvFilePath.endsWith(".csv")) {
+    if (!csvFilePath.endsWith(".csv", Qt::CaseInsensitive)) {
         csvFilePath += ".csv";
     }
 
@@ -77,6 +80,6 @@ void StartWindow::on_actionExport_triggered() {
     }
 
     QMessageBox msgBox;
-    msgBox.setText(QString("Dictionary was exported to file: %1.").arg(csvFilePath));
+    msgBox.setText(QString("Dictionary was exported to file:\n%1").arg(csvFilePath));
     msgBox.exec();
 }
