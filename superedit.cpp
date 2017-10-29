@@ -46,7 +46,7 @@ void SuperEditDelegate::setEditorData(QWidget *editor, const QModelIndex &index)
 
 void SuperEditDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const {
     SuperEdit* edit = static_cast<SuperEdit*>(editor);
-    model->setData(index, edit->ui->lineEdit->text());
+    model->setData(index, edit->ui->lineEdit->text().toLower());
 }
 
 void SuperEdit::on_printAeButton_clicked() {
