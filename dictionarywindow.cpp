@@ -4,6 +4,22 @@
 #include "superedit.h"
 
 #include <QCloseEvent>
+#include <QItemDelegate>
+
+class NotEditableDelegate : public QItemDelegate {
+public:
+    NotEditableDelegate(QObject *parent = 0)
+        : QItemDelegate(parent)
+    {}
+
+    bool editorEvent(QEvent */*event*/, QAbstractItemModel */*model*/, const QStyleOptionViewItem &/*option*/, const QModelIndex &/*index*/) const {
+        return false;
+    }
+
+    QWidget *createEditor(QWidget */*obj*/, const QStyleOptionViewItem &/**/, const QModelIndex &/**/) const {
+        return nullptr;
+    }
+};
 
 DictionaryWindow::DictionaryWindow(DataBase *_db, QWidget *parent)
     : QWidget(parent)
@@ -16,6 +32,8 @@ DictionaryWindow::DictionaryWindow(DataBase *_db, QWidget *parent)
     ui->setupUi(this);
     ui->dictTableView->setModel(sql_model);
     ui->dictTableView->setItemDelegateForColumn(2, new SuperEditDelegate(this));
+    ui->dictTableView->setItemDelegateForColumn(3, new NotEditableDelegate(this));
+    ui->dictTableView->setItemDelegateForColumn(4, new NotEditableDelegate(this));
 }
 
 DictionaryWindow::~DictionaryWindow() {
