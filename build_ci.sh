@@ -19,7 +19,6 @@ unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
 squashfs-root/AppRun bundle/LangLearn -bundle-non-qt-libs
 squashfs-root/AppRun bundle/LangLearn -appimage
 
-export URL="$(curl --upload-file ./Application-x86_64.AppImage https://transfer.sh/LangLearn-git.$BITBUCKET_COMMIT-x86_64.AppImage)"
-export BUILD_STATUS="{\"key\":\"doc\", \"state\":\"SUCCESSFUL\", \"name\":\"Documentation\", \"url\":\"${URL}\"}"
+ls -lah
 
-curl -H "Content-Type:application/json" -X POST --user "${BB_AUTH_STRING}" -d "${BUILD_STATUS}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/commit/${BITBUCKET_COMMIT}/statuses/build"
+curl -X POST "https://${BB_AUTH_STRING}@api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"Application-x86_64.AppImage"
