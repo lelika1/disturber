@@ -7,15 +7,23 @@
 #include <QDesktopWidget>
 
 #include <unistd.h>
+#include <memory>
 
 int main(int argc, char *argv[]) {
-    try {
+        QApplication a(argc, argv);
+
         Configurator &config = Configurator::Instance();
         config.LoadConfigFromFile("config");
 
-        DataBase db("dictionary.db");
-        QApplication a(argc, argv);
-        StartWindow w(&db);
+        std::unique_ptr<DataBase> db;
+        try {
+            db.reset(new DataBase("dictionary.db"));
+        } catch(DBCreateException ex) {
+            qDebug() << ex.what();
+            return 1;
+        }
+
+        StartWindow w(db.get());
         QRect wGeom = w.geometry();
         QDesktopWidget *desktop = QApplication::desktop();
         w.setGeometry(QRect((desktop->screenGeometry().width() -  wGeom.width())/2,
@@ -27,9 +35,6 @@ int main(int argc, char *argv[]) {
             a.exec();
             usleep(config.GetPeriodBetweenTrainigs() * 60 * 1000000);
         }
-    } catch(DBCreateException ex) {
-        qDebug() << ex.what();
-    }
 
     return 0;
 }
