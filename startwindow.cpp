@@ -1,6 +1,10 @@
 #include "startwindow.h"
 #include "ui_startwindow.h"
 
+#include "dictionarywindow.h"
+#include "settings.h"
+#include "studywindow.h"
+
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QFileDialog>
@@ -9,8 +13,6 @@
 StartWindow::StartWindow(DataBase *_db, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::StartWindow)
-    , dictionary_form(_db)
-    , study_form(_db)
     , db(_db)
 {
     ui->setupUi(this);
@@ -23,23 +25,26 @@ StartWindow::~StartWindow() {
 
 void StartWindow::on_studyButton_clicked() {
     QRect wGeom = this->geometry();
+    StudyWindow study_form(db);
     study_form.setGeometry(QRect(wGeom.x(), wGeom.y(),
                            study_form.geometry().width(),
                            study_form.geometry().height()));
-    study_form.Show();
+    study_form.Exec();
 }
 
 void StartWindow::on_action_Options_triggered() {
     QRect wGeom = this->geometry();
+    Settings options_form;
     options_form.setGeometry(QRect(wGeom.x(), wGeom.y(),
                              options_form.geometry().width(),
                              options_form.geometry().height()));
-    options_form.Show();
+    options_form.Exec();
 }
 
 void StartWindow::on_actionEdit_dictionary_triggered() {
+    DictionaryWindow dictionary_form(db);
     dictionary_form.setGeometry(QApplication::desktop()->screenGeometry());
-    dictionary_form.Show();
+    dictionary_form.Exec();
 }
 
 void StartWindow::on_actionImport_triggered() {

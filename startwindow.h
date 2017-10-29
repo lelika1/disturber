@@ -2,9 +2,6 @@
 #define STARTWINDOW_H
 
 #include "database.h"
-#include "dictionarywindow.h"
-#include "settings.h"
-#include "studywindow.h"
 
 #include <QMainWindow>
 
@@ -32,9 +29,6 @@ private slots:
 
 private:
     Ui::StartWindow *ui;
-    DictionaryWindow dictionary_form;
-    Settings options_form;
-    StudyWindow study_form;
     DataBase *db;
 };
 

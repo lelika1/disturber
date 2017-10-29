@@ -2,7 +2,9 @@
 #define DICTIONARYWINDOW_H
 
 #include "database.h"
-#include <QWidget>
+#include <QDialog>
+
+#include <memory>
 
 namespace Ui {
 
@@ -11,15 +13,15 @@ class DictionaryWindow;
 } // namespace Ui
 
 
-class DictionaryWindow : public QWidget {
+class DictionaryWindow : public QDialog {
     Q_OBJECT
 
 public:
-    explicit DictionaryWindow(DataBase *_db, QWidget *parent = 0);
+    explicit DictionaryWindow(DataBase *_db, QDialog *parent = 0);
     ~DictionaryWindow();
 
 public:
-    void Show();
+    void Exec();
 
 private slots:
     void on_findEdit_textChanged(const QString &arg1);
@@ -29,7 +31,7 @@ private slots:
 private:
     Ui::DictionaryWindow *ui;
     DataBase *db;
-    QSqlTableModel *sql_model;
+    std::unique_ptr<QSqlTableModel> sql_model;
 };
 
 #endif // DICTIONARYWINDOW_H

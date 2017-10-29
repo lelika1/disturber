@@ -4,8 +4,8 @@
 
 #include <QMessageBox>
 
-StudyWindow::StudyWindow(DataBase *db, QWidget *parent)
-    : QWidget(parent)
+StudyWindow::StudyWindow(DataBase *db, QDialog *parent)
+    : QDialog(parent)
     , ui(new Ui::StudyWindow)
     , db_(db)
 {
@@ -17,11 +17,11 @@ StudyWindow::~StudyWindow() {
     delete ui;
 }
 
-void StudyWindow::Show() {
+void StudyWindow::Exec() {
     teacher_.reset(new Teacher(db_));
 
     if (UpdateUI()) {
-        this->show();
+        this->exec();
         return;
     }
 

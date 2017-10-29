@@ -22,15 +22,15 @@ public:
     }
 };
 
-DictionaryWindow::DictionaryWindow(DataBase *_db, QWidget *parent)
-    : QWidget(parent)
+DictionaryWindow::DictionaryWindow(DataBase *_db, QDialog *parent)
+    : QDialog(parent)
     , ui(new Ui::DictionaryWindow)
     , db(_db)
 {
-    sql_model = new QSqlTableModel;
+    sql_model.reset(new QSqlTableModel);
     sql_model->setEditStrategy(QSqlTableModel::OnFieldChange);
     ui->setupUi(this);
-    ui->dictTableView->setModel(sql_model);
+    ui->dictTableView->setModel(sql_model.get());
     ui->dictTableView->setItemDelegateForColumn(2, new SuperEditDelegate(this));
     ui->dictTableView->setItemDelegateForColumn(3, new NotEditableDelegate(this));
     ui->dictTableView->setItemDelegateForColumn(4, new NotEditableDelegate(this));
@@ -40,16 +40,16 @@ DictionaryWindow::~DictionaryWindow() {
     delete ui;
 }
 
-void DictionaryWindow::Show() {
+void DictionaryWindow::Exec() {
     ui->findEdit->setText("");
-    this->show();
-    db->LoadAllEntriesToModel(sql_model);
+    db->LoadAllEntriesToModel(sql_model.get());
     ui->dictTableView->hideColumn(0);
     ui->dictTableView->show();
+    this->exec();
 }
 
 void DictionaryWindow::on_findEdit_textChanged(const QString &arg1) {
-    db->LoadEntriesWithFilter(sql_model, arg1.simplified());
+    db->LoadEntriesWithFilter(sql_model.get(), arg1.simplified());
     ui->dictTableView->hideColumn(0);
 }
 
@@ -70,6 +70,6 @@ void DictionaryWindow::on_addWordsButton_clicked() {
                                      (geometry().height() - g.height())/2,
                                      g.width(), g.height()));
     add_words_form.Exec();
-    db->LoadAllEntriesToModel(sql_model);
+    db->LoadAllEntriesToModel(sql_model.get());
     ui->dictTableView->hideColumn(0);
 }

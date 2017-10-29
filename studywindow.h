@@ -6,21 +6,21 @@
 #include <memory>
 
 #include <QKeyEvent>
-#include <QWidget>
+#include <QDialog>
 
 namespace Ui {
 class StudyWindow;
 }
 
-class StudyWindow : public QWidget
+class StudyWindow : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit StudyWindow(DataBase *db, QWidget *parent = 0);
+    explicit StudyWindow(DataBase *db, QDialog *parent = 0);
     ~StudyWindow();
 
-    void Show();
+    void Exec();
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;

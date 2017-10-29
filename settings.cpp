@@ -39,8 +39,8 @@ Configurator::Configurator()
 {}
 
 
-Settings::Settings(QWidget *parent) :
-    QWidget(parent),
+Settings::Settings(QDialog *parent) :
+    QDialog(parent),
     ui(new Ui::Settings)
 {
     ui->setupUi(this);
@@ -50,13 +50,13 @@ Settings::~Settings() {
     delete ui;
 }
 
-void Settings::Show() {
+void Settings::Exec() {
     Configurator &config = Configurator::Instance();
     ui->timePeriodBox->setValue(config.GetPeriodBetweenTrainigs());
     ui->wordsCountBox->setValue(config.GetWordsCountPerTraining());
     ui->successRateBox->setValue(config.GetSuccessRate());
     ui->oldWordsPercentageBox->setValue(config.GetPercentOfOldWordsPerTraining());
-    show();
+    exec();
 }
 
 void Settings::on_saveButton_clicked() {
