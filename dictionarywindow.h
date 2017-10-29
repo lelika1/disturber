@@ -29,6 +29,9 @@ private slots:
     void on_addWordsButton_clicked();
 
 private:
+    void RefreshTable();
+
+private:
     Ui::DictionaryWindow *ui;
     DataBase *db;
     std::unique_ptr<QSqlTableModel> sql_model;

@@ -42,15 +42,19 @@ DictionaryWindow::~DictionaryWindow() {
 
 void DictionaryWindow::Exec() {
     ui->findEdit->setText("");
-    db->LoadAllEntriesToModel(sql_model.get());
-    ui->dictTableView->hideColumn(0);
     ui->dictTableView->show();
+    RefreshTable();
     this->exec();
 }
 
-void DictionaryWindow::on_findEdit_textChanged(const QString &arg1) {
-    db->LoadEntriesWithFilter(sql_model.get(), arg1.simplified());
+void DictionaryWindow::RefreshTable() {
+    QString findStr = ui->findEdit->text().simplified().toLower();
+    db->LoadEntriesWithFilter(sql_model.get(), findStr);
     ui->dictTableView->hideColumn(0);
+}
+
+void DictionaryWindow::on_findEdit_textChanged(const QString &) {
+    RefreshTable();
 }
 
 void DictionaryWindow::on_deleteWordsButton_clicked() {
@@ -70,6 +74,5 @@ void DictionaryWindow::on_addWordsButton_clicked() {
                                      (geometry().height() - g.height())/2,
                                      g.width(), g.height()));
     add_words_form.Exec();
-    db->LoadAllEntriesToModel(sql_model.get());
-    ui->dictTableView->hideColumn(0);
+    RefreshTable();
 }
