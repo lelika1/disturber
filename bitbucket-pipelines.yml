@@ -4,7 +4,7 @@ pipelines:
   default:
     - step:
         script: 
-         - source /opt/qt*/bin/qt*-env.sh
+         - source /opt/qt59/bin/qt59-env.sh
          - qmake CONFIG+=release
          - make -j$(nproc)
          - mkdir -p /build/bundle
