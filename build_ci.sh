@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
-
 source /opt/qt*/bin/qt*.sh
 
 qmake CONFIG+=release
