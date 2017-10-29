@@ -1,25 +1,21 @@
-# This is a sample build configuration for C++ – Make.
-# Check our guides at https://confluence.atlassian.com/x/5Q4SMw for more examples.
-# Only use spaces to indent your .yml configuration.
-# -----
-# You can specify a custom docker image from Docker Hub as your build environment.
-image: walberla/buildenv-ubuntu-gcc:6
+image: luckygeck/ubuntu-gcc:trusty
 
 pipelines:
   default:
     - step:
         script: 
-         - add-apt-repository ppa:beineri/opt-qt591-trusty -y
-         - apt-get update -qq
-         - apt-get -y install qt59base
          - source /opt/qt*/bin/qt*-env.sh
-         - qmake CONFIG+=release PREFIX=/usr
+         - qmake CONFIG+=release
          - make -j$(nproc)
-         - make INSTALL_ROOT=appdir -j$(nproc) install ; find appdir/
+         - mkdir -p /build/bundle
+         - mv LangLearn /build/bundle
+         - cd /build
          - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
          - chmod a+x linuxdeployqt*.AppImage
+         - ./linuxdeployqt*.AppImage --appimage-extract
          - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
-         - ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -bundle-non-qt-libs
-         - ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -appimage
-         - find ./appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq
-         - curl --upload-file ./APPNAME*.AppImage https://transfer.sh/APPNAME-git.$(git rev-parse --short HEAD)-x86_64.AppImage
+         - squashfs-root/AppRun bundle/LangLearn -bundle-non-qt-libs
+         - squashfs-root/AppRun bundle/LangLearn -appimage
+         - export URL="$(curl --upload-file ./Application-x86_64.AppImage https://transfer.sh/LangLearn-git.$(git rev-parse --short HEAD)-x86_64.AppImage)"
+         - export BUILD_STATUS="{\"key\":\"doc\", \"state\":\"SUCCESSFUL\", \"name\":\"Documentation\", \"url\":\"${URL}\"}"
+         - curl -H "Content-Type:application/json" -X POST --user "${BB_AUTH_STRING}" -d "${BUILD_STATUS}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/commit/${BITBUCKET_COMMIT}/statuses/build"
