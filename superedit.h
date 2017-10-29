@@ -1,6 +1,7 @@
 #ifndef SUPEREDIT_H
 #define SUPEREDIT_H
 
+#include <QKeyEvent>
 #include <QLineEdit>
 #include <QWidget>
 #include <QItemDelegate>
@@ -22,6 +23,9 @@ public:
     void setFocusOnEdit();
 
     void setButtonsVisable(bool enable);
+
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
 
 private slots:
     void on_printAeButton_clicked();
