@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-echo Hello world
-set -ex
-set -o pipefail
+set -e
 
 source /opt/qt*/bin/qt*.sh
 
