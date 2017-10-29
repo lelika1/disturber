@@ -3,8 +3,8 @@
 
 #include <QMessageBox>
 
-AddWordsWindow::AddWordsWindow(DataBase *_db, QWidget *parent)
-    : QWidget(parent)
+AddWordsWindow::AddWordsWindow(DataBase *_db, QDialog *parent)
+    : QDialog(parent)
     , ui(new Ui::AddWordsWindow)
     , db(_db)
 {
@@ -15,11 +15,11 @@ AddWordsWindow::~AddWordsWindow() {
     delete ui;
 }
 
-void AddWordsWindow::Show() {
+void AddWordsWindow::Exec() {
     ui->ruWordEdit->setText("");
     ui->deWordEdit->setText("");
     ui->ruWordEdit->setFocus();
-    show();
+    exec();
 }
 
 void AddWordsWindow::keyPressEvent(QKeyEvent *event) {

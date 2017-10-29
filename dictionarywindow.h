@@ -2,7 +2,6 @@
 #define DICTIONARYWINDOW_H
 
 #include "database.h"
-#include "addwordswindow.h"
 #include <QWidget>
 
 namespace Ui {
@@ -31,8 +30,6 @@ private:
     Ui::DictionaryWindow *ui;
     DataBase *db;
     QSqlTableModel *sql_model;
-
-    AddWordsWindow add_words_form;
 };
 
 #endif // DICTIONARYWINDOW_H

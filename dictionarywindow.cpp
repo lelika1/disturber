@@ -1,6 +1,7 @@
 #include "dictionarywindow.h"
 #include "ui_dictionarywindow.h"
 
+#include "addwordswindow.h"
 #include "superedit.h"
 
 #include <QCloseEvent>
@@ -25,7 +26,6 @@ DictionaryWindow::DictionaryWindow(DataBase *_db, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::DictionaryWindow)
     , db(_db)
-    , add_words_form(_db)
 {
     sql_model = new QSqlTableModel;
     sql_model->setEditStrategy(QSqlTableModel::OnFieldChange);
@@ -64,9 +64,12 @@ void DictionaryWindow::on_deleteWordsButton_clicked() {
 }
 
 void DictionaryWindow::on_addWordsButton_clicked() {
+    AddWordsWindow add_words_form(db);
     QRect g = add_words_form.geometry();
     add_words_form.setGeometry(QRect((geometry().width()  -  g.width())/2,
                                      (geometry().height() - g.height())/2,
                                      g.width(), g.height()));
-    add_words_form.Show();
+    add_words_form.Exec();
+    db->LoadAllEntriesToModel(sql_model);
+    ui->dictTableView->hideColumn(0);
 }

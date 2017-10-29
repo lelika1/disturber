@@ -4,21 +4,21 @@
 #include "database.h"
 
 #include <QKeyEvent>
-#include <QWidget>
+#include <QDialog>
 
 namespace Ui {
 class AddWordsWindow;
 }
 
-class AddWordsWindow : public QWidget
+class AddWordsWindow : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit AddWordsWindow(DataBase *_db, QWidget *parent = 0);
+    explicit AddWordsWindow(DataBase *_db, QDialog *parent = 0);
     ~AddWordsWindow();
 
-    void Show();
+    void Exec();
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
