@@ -2,6 +2,8 @@
 #define ADDWORDSWINDOW_H
 
 #include "database.h"
+
+#include <QKeyEvent>
 #include <QWidget>
 
 namespace Ui {
@@ -17,6 +19,9 @@ public:
     ~AddWordsWindow();
 
     void Show();
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
 
 private slots:
     void on_addButton_clicked();

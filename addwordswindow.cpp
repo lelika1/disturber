@@ -22,6 +22,14 @@ void AddWordsWindow::Show() {
     show();
 }
 
+void AddWordsWindow::keyPressEvent(QKeyEvent *event) {
+    if ((event->key() == Qt::Key_Enter) || (event->key() == Qt::Key_Return)) {
+        ui->addButton->clicked();
+    } else {
+        QWidget::keyPressEvent(event);
+    }
+}
+
 void AddWordsWindow::on_addButton_clicked() {
     QString ru_word = ui->ruWordEdit->text().simplified();
     QString de_word = ui->deWordEdit->text().simplified();
@@ -37,6 +45,7 @@ void AddWordsWindow::on_addButton_clicked() {
             msgBox.exec();
         }
         ui->ruWordEdit->setText("");
+        ui->ruWordEdit->setFocus();
         ui->deWordEdit->setText("");
     }
 }

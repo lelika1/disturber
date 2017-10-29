@@ -5,6 +5,7 @@
 #include "teacher.h"
 #include <memory>
 
+#include <QKeyEvent>
 #include <QWidget>
 
 namespace Ui {
@@ -20,6 +21,9 @@ public:
     ~StudyWindow();
 
     void Show();
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
 
 private slots:
     void on_checkButton_clicked();

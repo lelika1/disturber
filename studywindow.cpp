@@ -62,6 +62,14 @@ void StudyWindow::on_de_ruButton_clicked() {
     UpdateUI();
 }
 
+void StudyWindow::keyPressEvent(QKeyEvent *event) {
+    if ((event->key() == Qt::Key_Enter) || (event->key() == Qt::Key_Return)) {
+        ui->checkButton->clicked();
+    } else {
+        QWidget::keyPressEvent(event);
+    }
+}
+
 bool StudyWindow::UpdateUI() {
     bool ruToDe = teacher_->RuToDe();
     const QString *word = teacher_->GetWord();
