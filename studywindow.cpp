@@ -10,7 +10,7 @@ StudyWindow::StudyWindow(DataBase *db, QWidget *parent)
     , db_(db)
 {
     ui->setupUi(this);
-    this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint );
+    this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
 }
 
 StudyWindow::~StudyWindow() {
@@ -36,6 +36,7 @@ void StudyWindow::on_checkButton_clicked() {
 
     QString correctAnswer;
     if (!teacher_->CheckResult(currentAnswer, correctAnswer)) {
+        ui->toWordEdit->setFocusOnEdit();
         QMessageBox msgBox;
         msgBox.setText(QString("Wrong! Correct translation: %1").arg(correctAnswer));
         msgBox.exec();
@@ -49,26 +50,6 @@ void StudyWindow::on_checkButton_clicked() {
     msgBox.exec();
     teacher_ = nullptr;
     close();
-}
-
-void StudyWindow::on_printAeButton_clicked() {
-    ui->toWordEdit->insert(ui->printAeButton->text().simplified());
-    ui->toWordEdit->setFocus();
-}
-
-void StudyWindow::on_printOeButton_clicked() {
-    ui->toWordEdit->insert(ui->printOeButton->text().simplified());
-    ui->toWordEdit->setFocus();
-}
-
-void StudyWindow::on_printUeButton_clicked() {
-    ui->toWordEdit->insert(ui->printUeButton->text().simplified());
-    ui->toWordEdit->setFocus();
-}
-
-void StudyWindow::on_printSsButton_clicked() {
-    ui->toWordEdit->insert(ui->printSsButton->text().simplified());
-    ui->toWordEdit->setFocus();
 }
 
 void StudyWindow::on_ru_deButton_clicked() {
@@ -90,10 +71,11 @@ bool StudyWindow::UpdateUI() {
 
     ui->ru_deButton->setChecked(ruToDe);
     ui->de_ruButton->setChecked(!ruToDe);
+    ui->toWordEdit->setButtonsVisable(ruToDe);
 
     ui->fromWordLabel->setText(*word);
     ui->toWordEdit->setText("");
-    ui->toWordEdit->setFocus();
+    ui->toWordEdit->setFocusOnEdit();
 
     if (ruToDe) {
         ui->fromLabel->setText("Russian word");
@@ -102,11 +84,6 @@ bool StudyWindow::UpdateUI() {
         ui->fromLabel->setText("German word");
         ui->toLabel->setText("Russian word");
     }
-
-    ui->printAeButton->setEnabled(ruToDe);
-    ui->printUeButton->setEnabled(ruToDe);
-    ui->printOeButton->setEnabled(ruToDe);
-    ui->printSsButton->setEnabled(ruToDe);
     return true;
 }
 

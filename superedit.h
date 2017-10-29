@@ -1,6 +1,7 @@
 #ifndef SUPEREDIT_H
 #define SUPEREDIT_H
 
+#include <QLineEdit>
 #include <QWidget>
 #include <QItemDelegate>
 
@@ -8,13 +9,19 @@ namespace Ui {
 class SuperEdit;
 }
 
-class SuperEdit : public QWidget
+class SuperEdit : public QLineEdit
 {
     Q_OBJECT
 
 public:
     explicit SuperEdit(QWidget *parent = 0);
     ~SuperEdit();
+
+    QString text();
+    void setText(const QString &str);
+    void setFocusOnEdit();
+
+    void setButtonsVisable(bool enable);
 
 private slots:
     void on_printAeButton_clicked();
@@ -24,6 +31,8 @@ private slots:
     void on_printUeButton_clicked();
 
     void on_printSsButton_clicked();
+
+    void on_lineEdit_textChanged(const QString &arg1);
 
 private:
     friend class SuperEditDelegate;

@@ -36,7 +36,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="findEdit"/>
+      <widget class="SuperEdit" name="findEdit"/>
      </item>
     </layout>
    </item>
@@ -82,6 +82,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SuperEdit</class>
+   <extends>QLineEdit</extends>
+   <header>superedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

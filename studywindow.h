@@ -23,10 +23,6 @@ public:
 
 private slots:
     void on_checkButton_clicked();
-    void on_printAeButton_clicked();
-    void on_printOeButton_clicked();
-    void on_printUeButton_clicked();
-    void on_printSsButton_clicked();
     void on_ru_deButton_clicked();
     void on_de_ruButton_clicked();
 

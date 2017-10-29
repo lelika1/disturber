@@ -2,15 +2,34 @@
 #include "ui_superedit.h"
 
 SuperEdit::SuperEdit(QWidget *parent) :
-    QWidget(parent),
+    QLineEdit(parent),
     ui(new Ui::SuperEdit)
 {
     ui->setupUi(this);
 }
 
-SuperEdit::~SuperEdit()
-{
+SuperEdit::~SuperEdit() {
     delete ui;
+}
+
+
+QString SuperEdit::text() {
+    return ui->lineEdit->text();
+}
+
+void SuperEdit::setText(const QString &str) {
+    ui->lineEdit->setText(str);
+}
+
+void SuperEdit::setFocusOnEdit() {
+    ui->lineEdit->setFocus();
+}
+
+void SuperEdit::setButtonsVisable(bool enable){
+    ui->printAeButton->setVisible(enable);
+    ui->printOeButton->setVisible(enable);
+    ui->printUeButton->setVisible(enable);
+    ui->printSsButton->setVisible(enable);
 }
 
 SuperEditDelegate::SuperEditDelegate(QObject *parent) : QItemDelegate(parent) {}
@@ -30,26 +49,26 @@ void SuperEditDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
     model->setData(index, edit->ui->lineEdit->text());
 }
 
-void SuperEdit::on_printAeButton_clicked()
-{
+void SuperEdit::on_printAeButton_clicked() {
     ui->lineEdit->insert(ui->printAeButton->text().simplified());
     ui->lineEdit->setFocus();
 }
 
-void SuperEdit::on_printOeButton_clicked()
-{
+void SuperEdit::on_printOeButton_clicked() {
     ui->lineEdit->insert(ui->printOeButton->text().simplified());
     ui->lineEdit->setFocus();
 }
 
-void SuperEdit::on_printUeButton_clicked()
-{
+void SuperEdit::on_printUeButton_clicked() {
     ui->lineEdit->insert(ui->printUeButton->text().simplified());
     ui->lineEdit->setFocus();
 }
 
-void SuperEdit::on_printSsButton_clicked()
-{
+void SuperEdit::on_printSsButton_clicked() {
     ui->lineEdit->insert(ui->printSsButton->text().simplified());
     ui->lineEdit->setFocus();
+}
+
+void SuperEdit::on_lineEdit_textChanged(const QString &arg1) {
+    textChanged(arg1);
 }

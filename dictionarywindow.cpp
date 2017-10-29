@@ -50,5 +50,5 @@ void DictionaryWindow::on_addWordsButton_clicked() {
     add_words_form.setGeometry(QRect((geometry().width()  -  g.width())/2,
                                      (geometry().height() - g.height())/2,
                                      g.width(), g.height()));
-    add_words_form.show();
+    add_words_form.Show();
 }

@@ -15,6 +15,13 @@ AddWordsWindow::~AddWordsWindow() {
     delete ui;
 }
 
+void AddWordsWindow::Show() {
+    ui->ruWordEdit->setText("");
+    ui->deWordEdit->setText("");
+    ui->ruWordEdit->setFocus();
+    show();
+}
+
 void AddWordsWindow::on_addButton_clicked() {
     QString ru_word = ui->ruWordEdit->text().simplified();
     QString de_word = ui->deWordEdit->text().simplified();
@@ -32,28 +39,4 @@ void AddWordsWindow::on_addButton_clicked() {
         ui->ruWordEdit->setText("");
         ui->deWordEdit->setText("");
     }
-}
-
-void AddWordsWindow::on_printAeButton_clicked()
-{
-    ui->deWordEdit->insert(ui->printAeButton->text().simplified());
-    ui->deWordEdit->setFocus();
-}
-
-void AddWordsWindow::on_printOeButton_clicked()
-{
-    ui->deWordEdit->insert(ui->printOeButton->text().simplified());
-    ui->deWordEdit->setFocus();
-}
-
-void AddWordsWindow::on_printUeButton_clicked()
-{
-    ui->deWordEdit->insert(ui->printUeButton->text().simplified());
-    ui->deWordEdit->setFocus();
-}
-
-void AddWordsWindow::on_printSsButton_clicked()
-{
-    ui->deWordEdit->insert(ui->printSsButton->text().simplified());
-    ui->deWordEdit->setFocus();
 }
