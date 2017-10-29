@@ -1,4 +1,4 @@
-# This is a sample build configuration for C++ â€“ Make.
+# This is a sample build configuration for C++ – Make.
 # Check our guides at https://confluence.atlassian.com/x/5Q4SMw for more examples.
 # Only use spaces to indent your .yml configuration.
 # -----
@@ -9,9 +9,9 @@ pipelines:
   default:
     - step:
         script: 
-         - sudo add-apt-repository ppa:beineri/opt-qt591-trusty -y
-         - sudo apt-get update -qq
-         - sudo apt-get -y install qt59base
+         - add-apt-repository ppa:beineri/opt-qt591-trusty -y
+         - apt-get update -qq
+         - apt-get -y install qt59base
          - source /opt/qt*/bin/qt*-env.sh
          - qmake CONFIG+=release PREFIX=/usr
          - make -j$(nproc)
