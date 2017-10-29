@@ -44,7 +44,7 @@ const QString* Teacher::GetWord() const {
 bool Teacher::CheckResult(const QString &answer, QString &correctAnswer) {
     auto& entry = entries[currentPairIndex];
     correctAnswer = (ruToDe) ? entry.deWord : entry.ruWord;
-    bool isCorrect = (answer == correctAnswer);
+    bool isCorrect = (answer.toLower() == correctAnswer.toLower());
 
     if (learnedByFirstTime) {
         if (entry.successRate == 0) {
