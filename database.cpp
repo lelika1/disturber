@@ -67,9 +67,9 @@ DataBase::~DataBase() {
 
 int DataBase::AddEntry(const QString &ru_word, const QString &de_word) {
     QVariantList ru_words;
-    ru_words << ru_word;
+    ru_words << ru_word.toLower();
     QVariantList de_words;
-    de_words << de_word;
+    de_words << de_word.toLower();
     return AddEntries(ru_words, de_words);
 }
 
@@ -185,8 +185,8 @@ int DataBase::ImportDictionaryFromCSV(const QString &csvPath) {
             qDebug() << "Incorrect line "<< line;
             break;
         }
-        ru_words << line[0];
-        de_words << line[1];
+        ru_words << line[0].toLower();
+        de_words << line[1].toLower();
     }
     file.close();
     return AddEntries(ru_words, de_words);
