@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+set -eu
+set -o pipefail
+
 export GIT_REV=$(git rev-parse --short HEAD)
 source /opt/qt*/bin/qt*.sh
 
