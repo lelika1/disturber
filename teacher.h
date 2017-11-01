@@ -11,7 +11,7 @@ public:
 
 public:
     const QString* GetWord() const;
-    bool CheckResult(const QString &answer, QString &correctAnswer);
+    bool SubmitAnswer(const QString &answer, QString &correctAnswer);
 
     bool RuToDe() const {return ruToDe; }
     void SetRuToDe(bool val) { ruToDe = val; }

@@ -35,7 +35,7 @@ void StudyWindow::on_checkButton_clicked() {
     QString currentAnswer = ui->toWordEdit->text().simplified();
 
     QString correctAnswer;
-    if (!teacher_->CheckResult(currentAnswer, correctAnswer)) {
+    if (!teacher_->SubmitAnswer(currentAnswer, correctAnswer)) {
         ui->toWordEdit->setFocusOnEdit();
         QMessageBox msgBox;
         msgBox.setText(QString("Wrong! Correct translation: %1").arg(correctAnswer));
@@ -45,9 +45,7 @@ void StudyWindow::on_checkButton_clicked() {
     if (UpdateUI()) {
         return;
     }
-    QMessageBox msgBox;
-    msgBox.setText(QString("Words per current study finished!"));
-    msgBox.exec();
+
     teacher_ = nullptr;
     close();
 }
