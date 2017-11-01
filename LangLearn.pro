@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     studywindow.cpp \
     superedit.cpp \
     teacher.cpp \
-    settings.cpp
+    settings.cpp \
+    resultswindow.cpp
 
 HEADERS  += startwindow.h \
     addwordswindow.h \
@@ -29,11 +30,13 @@ HEADERS  += startwindow.h \
     studywindow.h \
     superedit.h \
     teacher.h \
-    settings.h
+    settings.h \
+    resultswindow.h
 
 FORMS    += startwindow.ui \
     addwordswindow.ui \
     dictionarywindow.ui \
     studywindow.ui \
     superedit.ui \
-    settings.ui
+    settings.ui \
+    resultswindow.ui
