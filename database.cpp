@@ -4,14 +4,15 @@
 
 namespace {
 
-int AddEntries(const QVariantList &ru_words, const QVariantList &de_words) {
+int AddEntries(const QVariantList &ru_words, const QVariantList &de_words, const QVariantList &topic) {
     QSqlQuery q;
-    q.prepare("INSERT INTO DICTIONARY (RU, DE)"
-              " SELECT ?, ? WHERE NOT EXISTS"
+    q.prepare("INSERT INTO DICTIONARY (RU, DE, TOPIC)"
+              " SELECT ?, ?, ? WHERE NOT EXISTS"
               " (SELECT 1 FROM DICTIONARY WHERE ru = ? and de = ?)"
               ";");
     q.addBindValue(ru_words);
     q.addBindValue(de_words);
+    q.addBindValue(topic);
     q.addBindValue(ru_words);
     q.addBindValue(de_words);
     if (!q.execBatch()) {
@@ -23,11 +24,12 @@ int AddEntries(const QVariantList &ru_words, const QVariantList &de_words) {
 
 }
 
-StudyEntry::StudyEntry(int _id, const QString &ru, const QString &de,
+StudyEntry::StudyEntry(int _id, const QString &ru, const QString &de, const QString &top,
                        int lastTime, double rate, int showDate)
     : id(_id)
     , ruWord(ru)
     , deWord(de)
+    , topic(top)
     , lastTestDate(lastTime)
     , successRate(rate)
     , showAfterDate(showDate)
@@ -46,6 +48,7 @@ DataBase::DataBase(const QString &db_name) {
                               "ID           INTEGER   PRIMARY KEY   AUTOINCREMENT NOT NULL,"
                               "RU           TEXT                                  NOT NULL,"
                               "DE           TEXT                                  NOT NULL,"
+                              "TOPIC        TEXT      DEFAULT ANDERE              NOT NULL,"
                               "LASTDATE     INTEGER   DEFAULT 0,"
                               "PROGRESS     REAL      DEFAULT 0.5,"
                               "SHOWAFTER    INTEGER   DEFAULT 0);";
@@ -65,12 +68,15 @@ DataBase::~DataBase() {
     sdb.close();
 }
 
-int DataBase::AddEntry(const QString &ru_word, const QString &de_word) {
+int DataBase::AddEntry(const QString &ru_word, const QString &de_word, const QString &topic) {
     QVariantList ru_words;
     ru_words << ru_word.toLower();
     QVariantList de_words;
     de_words << de_word.toLower();
-    return AddEntries(ru_words, de_words);
+    QVariantList topics;
+    topics << topic.toUpper();
+
+    return AddEntries(ru_words, de_words, topics);
 }
 
 int DataBase::SelectByIds(const std::vector<int> &ids, std::vector<StudyEntry> &out) {
@@ -91,17 +97,25 @@ int DataBase::SelectByIds(const std::vector<int> &ids, std::vector<StudyEntry> &
         out.emplace_back(StudyEntry(q.value(0).toInt(),
                                     q.value(1).toString(),
                                     q.value(2).toString(),
-                                    q.value(3).toInt(),
-                                    q.value(4).toDouble(),
-                                    q.value(5).toInt()));
+                                    q.value(3).toString(),
+                                    q.value(4).toInt(),
+                                    q.value(5).toDouble(),
+                                    q.value(6).toInt()));
     }
     return 0;
 }
 
-int DataBase::SelectNOldest(size_t n, std::set<int> &ids) {
+int DataBase::SelectNOldest(const QString &topic, size_t n, std::set<int> &ids) {
     QSqlQuery q;
-    q.prepare("SELECT ID FROM DICTIONARY ORDER BY LASTDATE ASC LIMIT :N;");
-    q.bindValue(":N", static_cast<int>(n));
+    if (topic.toUpper() == "ALLES") {
+        q.prepare("SELECT ID FROM DICTIONARY ORDER BY LASTDATE ASC LIMIT :N;");
+        q.bindValue(":N", static_cast<int>(n));
+    } else {
+        q.prepare("SELECT ID FROM DICTIONARY WHERE TOPIC=:TOPIC ORDER BY LASTDATE ASC LIMIT :N;");
+        q.bindValue(":TOPIC", topic.toUpper());
+        q.bindValue(":N", static_cast<int>(n));
+    }
+
     if (!q.exec()) {
         qDebug() << "SelectNOldest(" << n << ") failed with: " << q.lastError().text();
         return 1;
@@ -112,10 +126,17 @@ int DataBase::SelectNOldest(size_t n, std::set<int> &ids) {
     return 0;
 }
 
-int DataBase::SelectNWorstKnown(size_t n, std::set<int> &ids) {
+int DataBase::SelectNWorstKnown(const QString &topic, size_t n, std::set<int> &ids) {
     QSqlQuery q;
-    q.prepare("SELECT ID FROM DICTIONARY ORDER BY PROGRESS ASC LIMIT :N;");
-    q.bindValue(":N", static_cast<int>(n));
+    if (topic.toUpper() == "ALLES") {
+        q.prepare("SELECT ID FROM DICTIONARY ORDER BY PROGRESS ASC LIMIT :N;");
+        q.bindValue(":N", static_cast<int>(n));
+    } else {
+        q.prepare("SELECT ID FROM DICTIONARY WHERE TOPIC=:TOPIC ORDER BY PROGRESS ASC LIMIT :N;");
+        q.bindValue(":TOPIC", topic.toUpper());
+        q.bindValue(":N", static_cast<int>(n));
+    }
+
     if (!q.exec()) {
         qDebug() << "SelectNWorstKnown(" << n << ") failed with: " << q.lastError().text();
         return 1;
@@ -153,7 +174,7 @@ void DataBase::LoadEntriesWithFilter(QSqlTableModel *model, const QString &wordP
 
 int DataBase::ExportDictionaryToCSV(const QString &csvPath) {
     QSqlQuery q;
-    if (!q.exec("SELECT RU, DE FROM DICTIONARY;")) {
+    if (!q.exec("SELECT RU, DE, TOPIC FROM DICTIONARY;")) {
         qDebug() << "Select entries failed. Error:" << q.lastError().text();
         return 1;
     }
@@ -165,7 +186,8 @@ int DataBase::ExportDictionaryToCSV(const QString &csvPath) {
     while (q.next()) {
         QString ru = q.value(0).toString();
         QString de = q.value(1).toString();
-        textStream << ru << "," << de << '\n';
+        QString topic = q.value(2).toString();
+        textStream << ru << "," << de << "," << topic << '\n';
     }
     fileWriter.close();
     return 0;
@@ -177,15 +199,30 @@ int DataBase::ImportDictionaryFromCSV(const QString &csvPath) {
     QTextStream in(&file);
     QVariantList ru_words;
     QVariantList de_words;
+    QVariantList topics;
     while (!in.atEnd()) {
         auto line = in.readLine().split(",");
-        if (line.size() != 2) {
+        if (line.size() != 3) {
             qDebug() << "Incorrect line "<< line;
             break;
         }
         ru_words << line[0].toLower();
         de_words << line[1].toLower();
+        topics << line[2].toUpper();
     }
     file.close();
-    return AddEntries(ru_words, de_words);
+    return AddEntries(ru_words, de_words, topics);
+}
+
+int DataBase::GetTopicsList(QSet<QString> &topics) {
+    QSqlQuery q;
+    q.prepare("SELECT DISTINCT TOPIC FROM DICTIONARY ORDER BY TOPIC;");
+    if (!q.exec()) {
+        qDebug() << "GetTopicssList() failed with: " << q.lastError().text();
+        return 1;
+    }
+    while (q.next()) {
+        topics.insert(q.value(0).toString().toUpper());
+    }
+    return 0;
 }

@@ -1,10 +1,15 @@
 #ifndef SUPEREDIT_H
 #define SUPEREDIT_H
 
+#include "database.h"
+
 #include <QKeyEvent>
 #include <QLineEdit>
 #include <QWidget>
 #include <QItemDelegate>
+
+#include<memory>
+
 
 namespace Ui {
 class SuperEdit;
@@ -52,5 +57,18 @@ public:
 
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
 };
+
+class TopicColumnDelegate : public QItemDelegate {
+public:
+    TopicColumnDelegate(DataBase *db, QObject *parent = 0);
+    QWidget* createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    void setEditorData(QWidget *editor, const QModelIndex &index) const;
+
+    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+
+private:
+    DataBase *db_;
+};
+
 
 #endif // SUPEREDIT_H

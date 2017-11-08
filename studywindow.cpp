@@ -4,22 +4,23 @@
 
 #include <QMessageBox>
 
-StudyWindow::StudyWindow(DataBase *db, QDialog *parent)
+StudyWindow::StudyWindow(DataBase *db, bool ruToDeDirection, size_t wordsPerTraining, const QString &topic, QDialog *parent)
     : QDialog(parent)
     , ui(new Ui::StudyWindow)
     , db_(db)
 {
     ui->setupUi(this);
     this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+    this->setWindowTitle(this->windowTitle() + ": " + topic);
+    teacher_.reset(new Teacher(db_, ruToDeDirection, wordsPerTraining, topic));
 }
 
 StudyWindow::~StudyWindow() {
+    teacher_ = nullptr;
     delete ui;
 }
 
 void StudyWindow::Exec() {
-    teacher_.reset(new Teacher(db_));
-
     if (UpdateUI()) {
         this->exec();
         return;
@@ -28,7 +29,6 @@ void StudyWindow::Exec() {
     QMessageBox msgBox;
     msgBox.setText(QString("Dictionary is currently empty!"));
     msgBox.exec();
-    teacher_ = nullptr;
 }
 
 void StudyWindow::on_checkButton_clicked() {
@@ -50,16 +50,6 @@ void StudyWindow::on_checkButton_clicked() {
     close();
 }
 
-void StudyWindow::on_ru_deButton_clicked() {
-    teacher_->SetRuToDe(true);
-    UpdateUI();
-}
-
-void StudyWindow::on_de_ruButton_clicked() {
-    teacher_->SetRuToDe(false);
-    UpdateUI();
-}
-
 void StudyWindow::keyPressEvent(QKeyEvent *event) {
     if ((event->key() == Qt::Key_Enter) || (event->key() == Qt::Key_Return)) {
         ui->checkButton->clicked();
@@ -69,14 +59,12 @@ void StudyWindow::keyPressEvent(QKeyEvent *event) {
 }
 
 bool StudyWindow::UpdateUI() {
-    bool ruToDe = teacher_->RuToDe();
+    bool ruToDe = teacher_->GetRuToDe();
     const QString *word = teacher_->GetWord();
     if (word == nullptr) {
         return false;
     }
 
-    ui->ru_deButton->setChecked(ruToDe);
-    ui->de_ruButton->setChecked(!ruToDe);
     ui->toWordEdit->setButtonsVisable(ruToDe);
 
     ui->fromWordLabel->setText(*word);

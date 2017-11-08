@@ -10,11 +10,12 @@ struct StudyEntry {
     int id;
     QString ruWord;
     QString deWord;
+    QString topic;
     int lastTestDate;
     double successRate;
     int showAfterDate;
 
-    StudyEntry(int _id, const QString &ru, const QString &de,
+    StudyEntry(int _id, const QString &ru, const QString &de, const QString &top,
                int lastTime = 0, double rate = 0, int showDate = 0);
 };
 
@@ -32,13 +33,13 @@ public:
     ~DataBase();
 
 public:
-    int AddEntry(const QString &ru_word, const QString &de_word);
+    int AddEntry(const QString &ru_word, const QString &de_word, const QString &topic);
     int SelectByIds(const std::vector<int> &ids, std::vector<StudyEntry> &out);
 
     // Adds ids for N most likely forgotten words to a given ids set.
-    int SelectNOldest(size_t n, std::set<int> &ids);
+    int SelectNOldest(const QString &topic, size_t n, std::set<int> &ids);
     // Adds ids for N words with lowest rate to a given ids set.
-    int SelectNWorstKnown(size_t n, std::set<int> &ids);
+    int SelectNWorstKnown(const QString &topic, size_t n, std::set<int> &ids);
 
     int UpdateEntry(const StudyEntry &entries);
 
@@ -47,6 +48,8 @@ public:
 
     int ExportDictionaryToCSV(const QString &csvPath);
     int ImportDictionaryFromCSV(const QString &csvPath);
+
+    int GetTopicsList(QSet<QString> &topics);
 
 public:
     QSqlDatabase sdb;

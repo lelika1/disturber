@@ -1,6 +1,9 @@
 #include "superedit.h"
 #include "ui_superedit.h"
 
+#include <QComboBox>
+
+
 SuperEdit::SuperEdit(QWidget *parent) :
     QLineEdit(parent),
     ui(new Ui::SuperEdit)
@@ -72,12 +75,12 @@ QWidget* SuperEditDelegate::createEditor(QWidget *parent, const QStyleOptionView
 
 void SuperEditDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
     QString value = index.model()->data(index).toString();
-    SuperEdit* edit = static_cast<SuperEdit*>(editor);
+    SuperEdit *edit = static_cast<SuperEdit*>(editor);
     edit->ui->lineEdit->setText(value);
 }
 
 void SuperEditDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const {
-    SuperEdit* edit = static_cast<SuperEdit*>(editor);
+    SuperEdit *edit = static_cast<SuperEdit*>(editor);
     model->setData(index, edit->ui->lineEdit->text().toLower());
 }
 
@@ -104,3 +107,39 @@ void SuperEdit::on_printSsButton_clicked() {
 void SuperEdit::on_lineEdit_textChanged(const QString &arg1) {
     textChanged(arg1);
 }
+
+TopicColumnDelegate::TopicColumnDelegate(DataBase *db, QObject *parent)
+    : QItemDelegate(parent)
+    , db_(db)
+{}
+
+QWidget* TopicColumnDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &/*option*/, const QModelIndex &/*index*/) const {
+    QComboBox *topicBox = new QComboBox(parent);
+    topicBox->setEditable(true);
+    return topicBox;
+}
+
+void TopicColumnDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
+    QString value = index.model()->data(index).toString().toUpper();
+    QComboBox *topicBox = static_cast<QComboBox*>(editor);
+
+    QSet<QString> topics;
+    db_->GetTopicsList(topics);
+    for (const auto& topic : topics) {
+        topicBox->addItem(topic);
+    }
+
+    QSortFilterProxyModel *topicProxy = new QSortFilterProxyModel(topicBox);
+    topicProxy->setSourceModel(topicBox->model());
+    topicBox->model()->setParent(topicProxy);
+    topicBox->setModel(topicProxy);
+    topicBox->model()->sort(0);
+
+    topicBox->setCurrentText(value);
+}
+
+void TopicColumnDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const {
+    QComboBox *topicBox= static_cast<QComboBox*>(editor);
+    model->setData(index, topicBox->currentText().toUpper());
+}
+

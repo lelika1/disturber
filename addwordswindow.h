@@ -6,6 +6,7 @@
 #include <QKeyEvent>
 #include <QDialog>
 
+
 namespace Ui {
 class AddWordsWindow;
 }
@@ -29,6 +30,7 @@ private slots:
 private:
     Ui::AddWordsWindow *ui;
     DataBase *db;
+    QSet<QString> topics;
 };
 
 #endif // ADDWORDSWINDOW_H

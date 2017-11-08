@@ -6,9 +6,11 @@
 
 Configurator &config = Configurator::Instance();
 
-Teacher::Teacher(DataBase *_db)
+Teacher::Teacher(DataBase *_db, bool ruToDeDirection, size_t wordsCount, const QString &topic)
     : db(_db)
-    , ruToDe(true)
+    , ruToDe(ruToDeDirection)
+    , wordsPerTraining(wordsCount)
+    , wordsTopic(topic)
     , currentPairIndex(0)
     , learnedByFirstTime(true)
 {
@@ -17,13 +19,13 @@ Teacher::Teacher(DataBase *_db)
 
 void Teacher::ReadStudyEntries(std::vector<StudyEntry>& _entries) {
     std::set<int> ids;
-    size_t totalWords = config.GetWordsCountPerTraining();
+    size_t totalWords = wordsPerTraining;
     // We will try to select 2*N words and then select a random subset of N words from it.
     size_t selectWords = 2 * totalWords;
     size_t oldWords = (selectWords * config.GetPercentOfOldWordsPerTraining()) / 100;
     size_t worstKnownWords = selectWords - oldWords;
-    db->SelectNOldest(oldWords, ids);
-    db->SelectNWorstKnown(worstKnownWords, ids);
+    db->SelectNOldest(wordsTopic, oldWords, ids);
+    db->SelectNWorstKnown(wordsTopic, worstKnownWords, ids);
 
     std::vector<int> resultIds(ids.begin(), ids.end());
     std::random_shuffle(resultIds.begin(), resultIds.end());
@@ -34,7 +36,7 @@ void Teacher::ReadStudyEntries(std::vector<StudyEntry>& _entries) {
 }
 
 const QString* Teacher::GetWord() const {
-    if (currentPairIndex >= entries.size() || currentPairIndex >= config.GetWordsCountPerTraining()) {
+    if (currentPairIndex >= entries.size() || currentPairIndex >= wordsPerTraining) {
         return nullptr;
     }
     const auto &currentPair = entries[currentPairIndex];

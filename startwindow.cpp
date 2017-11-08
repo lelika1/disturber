@@ -3,12 +3,14 @@
 
 #include "dictionarywindow.h"
 #include "settings.h"
-#include "studywindow.h"
+#include "setupstudywindow.h"
 
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QFileDialog>
 #include <QMessageBox>
+
+#include <memory>
 
 StartWindow::StartWindow(DataBase *_db, QWidget *parent)
     : QMainWindow(parent)
@@ -24,20 +26,12 @@ StartWindow::~StartWindow() {
 
 
 void StartWindow::on_studyButton_clicked() {
-    QRect wGeom = this->geometry();
-    StudyWindow study_form(db);
-    study_form.setGeometry(QRect(wGeom.x(), wGeom.y(),
-                           study_form.geometry().width(),
-                           study_form.geometry().height()));
-    study_form.Exec();
+    std::unique_ptr<SetupStudyWindow> setup_window_ptr(new SetupStudyWindow(db));
+    setup_window_ptr->Exec();
 }
 
 void StartWindow::on_action_Options_triggered() {
-    QRect wGeom = this->geometry();
     Settings options_form;
-    options_form.setGeometry(QRect(wGeom.x(), wGeom.y(),
-                             options_form.geometry().width(),
-                             options_form.geometry().height()));
     options_form.Exec();
 }
 

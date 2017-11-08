@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     superedit.cpp \
     teacher.cpp \
     settings.cpp \
-    resultswindow.cpp
+    resultswindow.cpp \
+    setupstudywindow.cpp
 
 HEADERS  += startwindow.h \
     addwordswindow.h \
@@ -31,7 +32,8 @@ HEADERS  += startwindow.h \
     superedit.h \
     teacher.h \
     settings.h \
-    resultswindow.h
+    resultswindow.h \
+    setupstudywindow.h
 
 FORMS    += startwindow.ui \
     addwordswindow.ui \
@@ -39,4 +41,5 @@ FORMS    += startwindow.ui \
     studywindow.ui \
     superedit.ui \
     settings.ui \
-    resultswindow.ui
+    resultswindow.ui \
+    setupstudywindow.ui

@@ -7,14 +7,12 @@
 
 class Teacher {
 public:
-    Teacher(DataBase *_db);
+    Teacher(DataBase *_db, bool ruToDeDirection, size_t wordsCount, const QString &topic);
 
 public:
     const QString* GetWord() const;
     bool SubmitAnswer(const QString &answer, QString &correctAnswer);
-
-    bool RuToDe() const {return ruToDe; }
-    void SetRuToDe(bool val) { ruToDe = val; }
+    bool GetRuToDe() const { return ruToDe; }
 
 private:
     void ReadStudyEntries(std::vector<StudyEntry> &entries_);
@@ -23,6 +21,8 @@ private:
     DataBase *db;
 
     bool ruToDe;
+    size_t wordsPerTraining;
+    QString wordsTopic;
 
     size_t currentPairIndex;
     bool learnedByFirstTime;

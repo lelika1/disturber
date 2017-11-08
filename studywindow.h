@@ -17,7 +17,7 @@ class StudyWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit StudyWindow(DataBase *db, QDialog *parent = 0);
+    StudyWindow(DataBase *db, bool ruToDeDirection, size_t wordsPerTraining, const QString &topic, QDialog *parent = 0);
     ~StudyWindow();
 
     void Exec();
@@ -27,8 +27,6 @@ protected:
 
 private slots:
     void on_checkButton_clicked();
-    void on_ru_deButton_clicked();
-    void on_de_ruButton_clicked();
 
 private:
     // Returns true if there is at least one pair of words left for studying.

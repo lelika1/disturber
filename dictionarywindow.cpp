@@ -32,8 +32,9 @@ DictionaryWindow::DictionaryWindow(DataBase *_db, QDialog *parent)
     ui->setupUi(this);
     ui->dictTableView->setModel(sql_model.get());
     ui->dictTableView->setItemDelegateForColumn(2, new SuperEditDelegate(this));
-    ui->dictTableView->setItemDelegateForColumn(3, new NotEditableDelegate(this));
+    ui->dictTableView->setItemDelegateForColumn(3, new TopicColumnDelegate(db, this));
     ui->dictTableView->setItemDelegateForColumn(4, new NotEditableDelegate(this));
+    ui->dictTableView->setItemDelegateForColumn(5, new NotEditableDelegate(this));
 }
 
 DictionaryWindow::~DictionaryWindow() {
@@ -69,10 +70,6 @@ void DictionaryWindow::on_deleteWordsButton_clicked() {
 
 void DictionaryWindow::on_addWordsButton_clicked() {
     AddWordsWindow add_words_form(db);
-    QRect g = add_words_form.geometry();
-    add_words_form.setGeometry(QRect((geometry().width()  -  g.width())/2,
-                                     (geometry().height() - g.height())/2,
-                                     g.width(), g.height()));
     add_words_form.Exec();
     RefreshTable();
 }
