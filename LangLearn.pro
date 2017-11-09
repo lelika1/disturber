@@ -22,7 +22,6 @@ SOURCES += main.cpp\
     settings.cpp \
     resultswindow.cpp \
     setupstudywindow.cpp \
-    studyentry.cpp \
     studysession.cpp
 
 HEADERS  += startwindow.h \
@@ -34,7 +33,6 @@ HEADERS  += startwindow.h \
     settings.h \
     resultswindow.h \
     setupstudywindow.h \
-    studyentry.h \
     studysession.h
 
 FORMS    += startwindow.ui \

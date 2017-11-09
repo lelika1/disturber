@@ -1,6 +1,7 @@
 #include "studywindow.h"
 #include "ui_studywindow.h"
 #include "studysession.h"
+#include "resultswindow.h"
 
 #include <QMessageBox>
 
@@ -46,8 +47,11 @@ void StudyWindow::on_checkButton_clicked() {
         return;
     }
 
-    session_ = nullptr;
     hide();
+    ResultsWindow resultWindow(this);
+    resultWindow.Exec(session_.get());
+    // TODO(): save session
+    session_ = nullptr;
     close();
 }
 
