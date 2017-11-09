@@ -7,7 +7,7 @@
 
 class Teacher {
 public:
-    Teacher(DataBase *_db, bool ruToDeDirection, size_t wordsCount, const QString &topic);
+    Teacher(DataBase *_db, bool ruToDeDirection, size_t wordsCount, const QStringList &topicsList);
 
 public:
     const QString* GetWord() const;
@@ -22,7 +22,7 @@ private:
 
     bool ruToDe;
     size_t wordsPerTraining;
-    QString wordsTopic;
+    QStringList wordsTopicsList;
 
     size_t currentPairIndex;
     bool learnedByFirstTime;

@@ -27,7 +27,7 @@ StartWindow::~StartWindow() {
 
 void StartWindow::on_studyButton_clicked() {
     std::unique_ptr<SetupStudyWindow> setup_window_ptr(new SetupStudyWindow(db));
-    setup_window_ptr->Exec();
+    setup_window_ptr->exec();
 }
 
 void StartWindow::on_action_Options_triggered() {

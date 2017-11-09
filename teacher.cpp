@@ -1,4 +1,4 @@
-﻿#include "settings.h"
+#include "settings.h"
 #include "teacher.h"
 
 #include <ctime>
@@ -6,11 +6,11 @@
 
 Configurator &config = Configurator::Instance();
 
-Teacher::Teacher(DataBase *_db, bool ruToDeDirection, size_t wordsCount, const QString &topic)
+Teacher::Teacher(DataBase *_db, bool ruToDeDirection, size_t wordsCount, const QStringList &topicsList)
     : db(_db)
     , ruToDe(ruToDeDirection)
     , wordsPerTraining(wordsCount)
-    , wordsTopic(topic)
+    , wordsTopicsList(topicsList)
     , currentPairIndex(0)
     , learnedByFirstTime(true)
 {
@@ -24,8 +24,8 @@ void Teacher::ReadStudyEntries(std::vector<StudyEntry>& _entries) {
     size_t selectWords = 2 * totalWords;
     size_t oldWords = (selectWords * config.GetPercentOfOldWordsPerTraining()) / 100;
     size_t worstKnownWords = selectWords - oldWords;
-    db->SelectNOldest(wordsTopic, oldWords, ids);
-    db->SelectNWorstKnown(wordsTopic, worstKnownWords, ids);
+    db->SelectNOldest(wordsTopicsList, oldWords, ids);
+    db->SelectNWorstKnown(wordsTopicsList, worstKnownWords, ids);
 
     std::vector<int> resultIds(ids.begin(), ids.end());
     std::random_shuffle(resultIds.begin(), resultIds.end());

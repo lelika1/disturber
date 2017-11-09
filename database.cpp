@@ -105,16 +105,14 @@ int DataBase::SelectByIds(const std::vector<int> &ids, std::vector<StudyEntry> &
     return 0;
 }
 
-int DataBase::SelectNOldest(const QString &topic, size_t n, std::set<int> &ids) {
+int DataBase::SelectNOldest(const QStringList &topicsList, size_t n, std::set<int> &ids) {
     QSqlQuery q;
-    if (topic.toUpper() == "ALLES") {
+    if ((topicsList.size() == 1 ) && (topicsList[0].toUpper() == "ALLES")) {
         q.prepare("SELECT ID FROM DICTIONARY ORDER BY LASTDATE ASC LIMIT :N;");
-        q.bindValue(":N", static_cast<int>(n));
     } else {
-        q.prepare("SELECT ID FROM DICTIONARY WHERE TOPIC=:TOPIC ORDER BY LASTDATE ASC LIMIT :N;");
-        q.bindValue(":TOPIC", topic.toUpper());
-        q.bindValue(":N", static_cast<int>(n));
+        q.prepare("SELECT ID FROM DICTIONARY WHERE TOPIC in (" + topicsList.join(",") + ") ORDER BY LASTDATE ASC LIMIT :N;");
     }
+    q.bindValue(":N", static_cast<int>(n));
 
     if (!q.exec()) {
         qDebug() << "SelectNOldest(" << n << ") failed with: " << q.lastError().text();
@@ -126,16 +124,14 @@ int DataBase::SelectNOldest(const QString &topic, size_t n, std::set<int> &ids) 
     return 0;
 }
 
-int DataBase::SelectNWorstKnown(const QString &topic, size_t n, std::set<int> &ids) {
+int DataBase::SelectNWorstKnown(const QStringList &topicsList, size_t n, std::set<int> &ids) {
     QSqlQuery q;
-    if (topic.toUpper() == "ALLES") {
+    if ((topicsList.size() == 1 ) && (topicsList[0].toUpper() == "ALLES")) {
         q.prepare("SELECT ID FROM DICTIONARY ORDER BY PROGRESS ASC LIMIT :N;");
-        q.bindValue(":N", static_cast<int>(n));
     } else {
-        q.prepare("SELECT ID FROM DICTIONARY WHERE TOPIC=:TOPIC ORDER BY PROGRESS ASC LIMIT :N;");
-        q.bindValue(":TOPIC", topic.toUpper());
-        q.bindValue(":N", static_cast<int>(n));
+        q.prepare("SELECT ID FROM DICTIONARY WHERE TOPIC in (" + topicsList.join(",") + ") ORDER BY PROGRESS ASC LIMIT :N;");
     }
+    q.bindValue(":N", static_cast<int>(n));
 
     if (!q.exec()) {
         qDebug() << "SelectNWorstKnown(" << n << ") failed with: " << q.lastError().text();

@@ -17,7 +17,7 @@ class StudyWindow : public QDialog
     Q_OBJECT
 
 public:
-    StudyWindow(DataBase *db, bool ruToDeDirection, size_t wordsPerTraining, const QString &topic, QDialog *parent = 0);
+    StudyWindow(DataBase *db, bool ruToDeDirection, size_t wordsPerTraining, const QStringList &topicsList, QDialog *parent = 0);
     ~StudyWindow();
 
     void Exec();

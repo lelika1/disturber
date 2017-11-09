@@ -21,7 +21,7 @@ struct StudyEntry {
 
 class DBCreateException: public std::exception {
 public:
-    virtual const char* what() const throw() {
+    const char* what() const throw() override {
         return "It is impossible to open DB or create table.";
     }
 };
@@ -37,9 +37,9 @@ public:
     int SelectByIds(const std::vector<int> &ids, std::vector<StudyEntry> &out);
 
     // Adds ids for N most likely forgotten words to a given ids set.
-    int SelectNOldest(const QString &topic, size_t n, std::set<int> &ids);
+    int SelectNOldest(const QStringList &topicsList, size_t n, std::set<int> &ids);
     // Adds ids for N words with lowest rate to a given ids set.
-    int SelectNWorstKnown(const QString &topic, size_t n, std::set<int> &ids);
+    int SelectNWorstKnown(const QStringList &topicsList, size_t n, std::set<int> &ids);
 
     int UpdateEntry(const StudyEntry &entries);
 

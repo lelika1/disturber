@@ -4,15 +4,15 @@
 
 #include <QMessageBox>
 
-StudyWindow::StudyWindow(DataBase *db, bool ruToDeDirection, size_t wordsPerTraining, const QString &topic, QDialog *parent)
+StudyWindow::StudyWindow(DataBase *db, bool ruToDeDirection, size_t wordsPerTraining, const QStringList &topicsList, QDialog *parent)
     : QDialog(parent)
     , ui(new Ui::StudyWindow)
     , db_(db)
 {
     ui->setupUi(this);
     this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
-    this->setWindowTitle(this->windowTitle() + ": " + topic);
-    teacher_.reset(new Teacher(db_, ruToDeDirection, wordsPerTraining, topic));
+    this->setWindowTitle(this->windowTitle() + ": " + topicsList.join("|"));
+    teacher_.reset(new Teacher(db_, ruToDeDirection, wordsPerTraining, topicsList));
 }
 
 StudyWindow::~StudyWindow() {

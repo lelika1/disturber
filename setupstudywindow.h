@@ -18,10 +18,10 @@ public:
     explicit SetupStudyWindow(DataBase *_db, QWidget *parent = 0);
     ~SetupStudyWindow();
 
-    void Exec();
-
 private slots:
     void on_continueButton_clicked();
+
+    void on_allTopicsCheckBox_clicked(bool checked);
 
 private:
     Ui::SetupStudyWindow *ui;
