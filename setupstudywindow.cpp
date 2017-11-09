@@ -16,8 +16,8 @@ SetupStudyWindow::SetupStudyWindow(DataBase *_db, QWidget *parent)
     ui->setupUi(this);
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
     Configurator &config = Configurator::Instance();
-    ui->wordsCountBox->setMinimum(config.GetWordsCountPerTraining());
-    ui->wordsCountBox->setValue(config.GetWordsCountPerTraining());
+    ui->wordsCountBox->setMinimum(config.GetWordsCountPerSession());
+    ui->wordsCountBox->setValue(config.GetWordsCountPerSession());
     ui->allTopicsCheckBox->setChecked(true);
     ui->topicListView->setVisible(false);
 
@@ -41,7 +41,7 @@ SetupStudyWindow::~SetupStudyWindow() {
 
 void SetupStudyWindow::on_continueButton_clicked() {
     bool ruToDeDirection = ui->ruToDeButton->isChecked();
-    size_t wordsPerTraining = ui->wordsCountBox->value();
+    size_t wordsPerSession = ui->wordsCountBox->value();
     QStringList topicsList;
     if (ui->allTopicsCheckBox->isChecked()) {
         topicsList << "ALLES";
@@ -62,7 +62,7 @@ void SetupStudyWindow::on_continueButton_clicked() {
     }
 
     this->setVisible(false);
-    StudyWindow study_form(db, ruToDeDirection, wordsPerTraining, topicsList);
+    StudyWindow study_form(db, ruToDeDirection, wordsPerSession, topicsList);
     study_form.Exec();
     close();
 }

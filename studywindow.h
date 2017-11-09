@@ -2,7 +2,7 @@
 #define STUDYWINDOW_H
 
 #include "database.h"
-#include "teacher.h"
+#include "studysession.h"
 #include <memory>
 
 #include <QKeyEvent>
@@ -17,7 +17,7 @@ class StudyWindow : public QDialog
     Q_OBJECT
 
 public:
-    StudyWindow(DataBase *db, bool ruToDeDirection, size_t wordsPerTraining, const QStringList &topicsList, QDialog *parent = 0);
+    StudyWindow(DataBase *db, bool ruToDeDirection, size_t wordsPerSession, const QStringList &topicsList, QDialog *parent = 0);
     ~StudyWindow();
 
     void Exec();
@@ -36,7 +36,7 @@ private:
     Ui::StudyWindow *ui;
     DataBase *db_;
 
-    std::unique_ptr<Teacher> teacher_;
+    std::unique_ptr<StudySession> session_;
 };
 
 #endif // STUDYWINDOW_H

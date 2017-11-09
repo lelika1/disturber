@@ -1,13 +1,13 @@
-#ifndef TEACHER_H
-#define TEACHER_H
+#ifndef STUDYSESSION_H
+#define STUDYSESSION_H
 
 #include "database.h"
-
+#include "studyentry.h"
 #include <vector>
 
-class Teacher {
+class StudySession {
 public:
-    Teacher(DataBase *_db, bool ruToDeDirection, size_t wordsCount, const QStringList &topicsList);
+    StudySession(DataBase *_db, bool ruToDeDirection, size_t wordsCount, const QStringList &topicsList);
 
 public:
     const QString* GetWord() const;
@@ -21,7 +21,7 @@ private:
     DataBase *db;
 
     bool ruToDe;
-    size_t wordsPerTraining;
+    size_t wordsPerSession;
     QStringList wordsTopicsList;
 
     size_t currentPairIndex;
@@ -30,4 +30,4 @@ private:
     std::vector<StudyEntry> entries;
 };
 
-#endif // TEACHER_H
+#endif // STUDYSESSION_H

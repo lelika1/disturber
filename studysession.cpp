@@ -1,15 +1,15 @@
 #include "settings.h"
-#include "teacher.h"
+#include "studysession.h"
 
 #include <ctime>
 #include <algorithm>
 
 Configurator &config = Configurator::Instance();
 
-Teacher::Teacher(DataBase *_db, bool ruToDeDirection, size_t wordsCount, const QStringList &topicsList)
+StudySession::StudySession(DataBase *_db, bool ruToDeDirection, size_t wordsCount, const QStringList &topicsList)
     : db(_db)
     , ruToDe(ruToDeDirection)
-    , wordsPerTraining(wordsCount)
+    , wordsPerSession(wordsCount)
     , wordsTopicsList(topicsList)
     , currentPairIndex(0)
     , learnedByFirstTime(true)
@@ -17,12 +17,12 @@ Teacher::Teacher(DataBase *_db, bool ruToDeDirection, size_t wordsCount, const Q
     ReadStudyEntries(entries);
 }
 
-void Teacher::ReadStudyEntries(std::vector<StudyEntry>& _entries) {
+void StudySession::ReadStudyEntries(std::vector<StudyEntry>& entries_) {
     std::set<int> ids;
-    size_t totalWords = wordsPerTraining;
+    size_t totalWords = wordsPerSession;
     // We will try to select 2*N words and then select a random subset of N words from it.
     size_t selectWords = 2 * totalWords;
-    size_t oldWords = (selectWords * config.GetPercentOfOldWordsPerTraining()) / 100;
+    size_t oldWords = (selectWords * config.GetPercentOfOldWordsPerSession()) / 100;
     size_t worstKnownWords = selectWords - oldWords;
     db->SelectNOldest(wordsTopicsList, oldWords, ids);
     db->SelectNWorstKnown(wordsTopicsList, worstKnownWords, ids);
@@ -32,18 +32,22 @@ void Teacher::ReadStudyEntries(std::vector<StudyEntry>& _entries) {
     if (resultIds.size() > totalWords) {
         resultIds.erase(resultIds.begin() + totalWords, resultIds.end());
     }
-    db->SelectByIds(resultIds, _entries);
+    std::vector<DBEntry> tmp;
+    db->SelectByIds(resultIds, tmp);
+    for (auto& e : tmp) {
+        entries_.emplace_back(std::move(e));
+    }
 }
 
-const QString* Teacher::GetWord() const {
-    if (currentPairIndex >= entries.size() || currentPairIndex >= wordsPerTraining) {
+const QString* StudySession::GetWord() const {
+    if (currentPairIndex >= entries.size() || currentPairIndex >= wordsPerSession) {
         return nullptr;
     }
     const auto &currentPair = entries[currentPairIndex];
     return (ruToDe) ? &currentPair.ruWord : &currentPair.deWord;
 }
 
-bool Teacher::SubmitAnswer(const QString &answer, QString &correctAnswer) {
+bool StudySession::SubmitAnswer(const QString &answer, QString &correctAnswer) {
     auto& entry = entries[currentPairIndex];
     correctAnswer = (ruToDe) ? entry.deWord : entry.ruWord;
     bool isCorrect = (answer.toLower() == correctAnswer.toLower());

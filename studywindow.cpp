@@ -1,10 +1,10 @@
 #include "studywindow.h"
 #include "ui_studywindow.h"
-#include "teacher.h"
+#include "studysession.h"
 
 #include <QMessageBox>
 
-StudyWindow::StudyWindow(DataBase *db, bool ruToDeDirection, size_t wordsPerTraining, const QStringList &topicsList, QDialog *parent)
+StudyWindow::StudyWindow(DataBase *db, bool ruToDeDirection, size_t wordsPerSession, const QStringList &topicsList, QDialog *parent)
     : QDialog(parent)
     , ui(new Ui::StudyWindow)
     , db_(db)
@@ -12,11 +12,11 @@ StudyWindow::StudyWindow(DataBase *db, bool ruToDeDirection, size_t wordsPerTrai
     ui->setupUi(this);
     this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
     this->setWindowTitle(this->windowTitle() + ": " + topicsList.join("|"));
-    teacher_.reset(new Teacher(db_, ruToDeDirection, wordsPerTraining, topicsList));
+    session_.reset(new StudySession(db_, ruToDeDirection, wordsPerSession, topicsList));
 }
 
 StudyWindow::~StudyWindow() {
-    teacher_ = nullptr;
+    session_ = nullptr;
     delete ui;
 }
 
@@ -35,7 +35,7 @@ void StudyWindow::on_checkButton_clicked() {
     QString currentAnswer = ui->toWordEdit->text().simplified();
 
     QString correctAnswer;
-    if (!teacher_->SubmitAnswer(currentAnswer, correctAnswer)) {
+    if (!session_->SubmitAnswer(currentAnswer, correctAnswer)) {
         ui->toWordEdit->setFocusOnEdit();
         QMessageBox msgBox;
         msgBox.setText(QString("Wrong! Correct translation: %1").arg(correctAnswer));
@@ -46,7 +46,8 @@ void StudyWindow::on_checkButton_clicked() {
         return;
     }
 
-    teacher_ = nullptr;
+    session_ = nullptr;
+    hide();
     close();
 }
 
@@ -59,8 +60,8 @@ void StudyWindow::keyPressEvent(QKeyEvent *event) {
 }
 
 bool StudyWindow::UpdateUI() {
-    bool ruToDe = teacher_->GetRuToDe();
-    const QString *word = teacher_->GetWord();
+    bool ruToDe = session_->GetRuToDe();
+    const QString *word = session_->GetWord();
     if (word == nullptr) {
         return false;
     }

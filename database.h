@@ -6,7 +6,7 @@
 #include <set>
 #include <vector>
 
-struct StudyEntry {
+struct DBEntry {
     int id;
     QString ruWord;
     QString deWord;
@@ -15,8 +15,8 @@ struct StudyEntry {
     double successRate;
     int showAfterDate;
 
-    StudyEntry(int _id, const QString &ru, const QString &de, const QString &top,
-               int lastTime = 0, double rate = 0, int showDate = 0);
+    DBEntry(int _id, const QString &ru, const QString &de, const QString &top,
+            int lastTime = 0, double rate = 0, int showDate = 0);
 };
 
 class DBCreateException: public std::exception {
@@ -34,14 +34,14 @@ public:
 
 public:
     int AddEntry(const QString &ru_word, const QString &de_word, const QString &topic);
-    int SelectByIds(const std::vector<int> &ids, std::vector<StudyEntry> &out);
+    int SelectByIds(const std::vector<int> &ids, std::vector<DBEntry> &out);
 
     // Adds ids for N most likely forgotten words to a given ids set.
     int SelectNOldest(const QStringList &topicsList, size_t n, std::set<int> &ids);
     // Adds ids for N words with lowest rate to a given ids set.
     int SelectNWorstKnown(const QStringList &topicsList, size_t n, std::set<int> &ids);
 
-    int UpdateEntry(const StudyEntry &entries);
+    int UpdateEntry(const DBEntry &entries);
 
     void LoadAllEntriesToModel(QSqlTableModel *model);
     void LoadEntriesWithFilter(QSqlTableModel *model, const QString &wordPart);

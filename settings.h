@@ -19,21 +19,21 @@ public:
     void LoadConfigFromFile(const QString &path);
     void SaveConfigToFile();
 
-    size_t GetPeriodBetweenTrainigs() { return periodBetweenTrainings; }
-    void SetPeriodBetweenTrainigs(size_t period) { periodBetweenTrainings = period; }
+    size_t GetPeriodBetweenSessions() { return periodBetweenSessions; }
+    void SetPeriodBetweenSessions(size_t period) { periodBetweenSessions = period; }
 
-    size_t GetWordsCountPerTraining() { return wordsPerTraining; }
-    void SetWordsCountPerTraining(size_t count) { wordsPerTraining = count; }
+    size_t GetWordsCountPerSession() { return wordsPerSession; }
+    void SetWordsCountPerSession(size_t count) { wordsPerSession = count; }
 
     size_t GetSuccessRate() { return successRate; }
     void SetSuccessRate(size_t rate) { successRate = rate; }
 
-    size_t GetPercentOfOldWordsPerTraining() { return percentageOfOldWords; }
-    void SetPercentOfOldWordsPerTraining(size_t percent) { percentageOfOldWords = percent; }
+    size_t GetPercentOfOldWordsPerSession() { return percentageOfOldWords; }
+    void SetPercentOfOldWordsPerSession(size_t percent) { percentageOfOldWords = percent; }
 
 private:
-    size_t periodBetweenTrainings;
-    size_t wordsPerTraining;
+    size_t periodBetweenSessions;
+    size_t wordsPerSession;
     size_t successRate;
     size_t percentageOfOldWords;
     QString configPath;

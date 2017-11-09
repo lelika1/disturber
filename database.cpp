@@ -24,7 +24,7 @@ int AddEntries(const QVariantList &ru_words, const QVariantList &de_words, const
 
 }
 
-StudyEntry::StudyEntry(int _id, const QString &ru, const QString &de, const QString &top,
+DBEntry::DBEntry(int _id, const QString &ru, const QString &de, const QString &top,
                        int lastTime, double rate, int showDate)
     : id(_id)
     , ruWord(ru)
@@ -79,7 +79,7 @@ int DataBase::AddEntry(const QString &ru_word, const QString &de_word, const QSt
     return AddEntries(ru_words, de_words, topics);
 }
 
-int DataBase::SelectByIds(const std::vector<int> &ids, std::vector<StudyEntry> &out) {
+int DataBase::SelectByIds(const std::vector<int> &ids, std::vector<DBEntry> &out) {
     QStringList idstrings;
     for (int id : ids) {
         idstrings << QString::number(id);
@@ -94,7 +94,7 @@ int DataBase::SelectByIds(const std::vector<int> &ids, std::vector<StudyEntry> &
         return 1;
     }
     while (q.next()) {
-        out.emplace_back(StudyEntry(q.value(0).toInt(),
+        out.emplace_back(DBEntry(q.value(0).toInt(),
                                     q.value(1).toString(),
                                     q.value(2).toString(),
                                     q.value(3).toString(),
@@ -143,7 +143,7 @@ int DataBase::SelectNWorstKnown(const QStringList &topicsList, size_t n, std::se
     return 0;
 }
 
-int DataBase::UpdateEntry(const StudyEntry &entry) {
+int DataBase::UpdateEntry(const DBEntry &entry) {
     QSqlQuery q;
     q.prepare("UPDATE DICTIONARY SET PROGRESS = :progress, LASTDATE = :lastdate WHERE ID = :id;");
     q.bindValue(":progress", entry.successRate);

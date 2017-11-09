@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
         while (true) {
             w.show();
             a.exec();
-            usleep(config.GetPeriodBetweenTrainigs() * 60 * 1000000);
+            usleep(config.GetPeriodBetweenSessions() * 60 * 1000000);
         }
 
     return 0;
