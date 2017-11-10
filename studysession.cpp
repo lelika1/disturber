@@ -18,8 +18,8 @@ StudySession::StudySession(DataBase *_db, bool ruToDeDirection, size_t wordsCoun
 void StudySession::ReadStudyEntries(std::vector<StudyEntry>& entries_) {
     std::set<int> ids;
     size_t totalWords = wordsPerSession;
-    // We will try to select 2*N words and then select a random subset of N words from it.
-    size_t selectWords = 2 * totalWords;
+    // We will try to select SampleExpansion*N words and then select a random subset of N words from it.
+    size_t selectWords = config.GetSampleExpantion() * totalWords;
     size_t oldWords = (selectWords * config.GetPercentOfOldWordsPerSession()) / 100;
     size_t worstKnownWords = selectWords - oldWords;
     db->SelectNOldest(wordsTopicsList, oldWords, ids);

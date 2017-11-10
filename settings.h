@@ -31,11 +31,15 @@ public:
     size_t GetPercentOfOldWordsPerSession() { return percentageOfOldWords; }
     void SetPercentOfOldWordsPerSession(size_t percent) { percentageOfOldWords = percent; }
 
+    size_t GetSampleExpantion() { return sampleExpansion; }
+    void SetSampleExpansion(size_t expansion) { sampleExpansion = expansion; }
+
 private:
     size_t periodBetweenSessions;
     size_t wordsPerSession;
     size_t successRate;
     size_t percentageOfOldWords;
+    size_t sampleExpansion;
     QString configPath;
 
 private:
