@@ -36,7 +36,11 @@
       </widget>
      </item>
      <item>
-      <widget class="SuperEdit" name="findEdit"/>
+      <widget class="SuperEdit" name="findEdit">
+       <property name="toolTip">
+        <string>Input part of russian or german word for searching.</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -66,6 +70,9 @@
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
       <widget class="QPushButton" name="addWordsButton">
+       <property name="toolTip">
+        <string>Add new words to DataBase.</string>
+       </property>
        <property name="text">
         <string>Add Words</string>
        </property>
@@ -73,6 +80,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="deleteWordsButton">
+       <property name="toolTip">
+        <string>Delete selected row from DataBase.</string>
+       </property>
        <property name="text">
         <string>Delete Words</string>
        </property>

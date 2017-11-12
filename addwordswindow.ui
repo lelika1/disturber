@@ -47,7 +47,11 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLineEdit" name="ruWordEdit"/>
+        <widget class="QLineEdit" name="ruWordEdit">
+         <property name="toolTip">
+          <string>Input word in russian.</string>
+         </property>
+        </widget>
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_2">
@@ -57,7 +61,11 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="SuperEdit" name="deWordEdit"/>
+        <widget class="SuperEdit" name="deWordEdit">
+         <property name="toolTip">
+          <string>Input corresponding word in german.</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -74,6 +82,9 @@
          <width>0</width>
          <height>20</height>
         </size>
+       </property>
+       <property name="toolTip">
+        <string>Add current pair to DataBase.</string>
        </property>
        <property name="text">
         <string>Add words</string>
@@ -93,6 +104,9 @@
      </item>
      <item>
       <widget class="QComboBox" name="topicsComboBox">
+       <property name="toolTip">
+        <string>Choose existing topic for this pair or input new topic.</string>
+       </property>
        <property name="editable">
         <bool>true</bool>
        </property>

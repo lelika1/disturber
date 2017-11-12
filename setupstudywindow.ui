@@ -45,6 +45,9 @@
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="QRadioButton" name="ruToDeButton">
+         <property name="toolTip">
+          <string>Translate words from russian to german during current StudySession.</string>
+         </property>
          <property name="text">
           <string>Ru -&gt; De</string>
          </property>
@@ -55,6 +58,9 @@
        </item>
        <item>
         <widget class="QRadioButton" name="deToRuButton">
+         <property name="toolTip">
+          <string>Translate words from german to russian during current StudySession.</string>
+         </property>
          <property name="text">
           <string>De -&gt; Ru</string>
          </property>
@@ -71,6 +77,9 @@
      </item>
      <item row="1" column="1">
       <widget class="QSpinBox" name="wordsCountBox">
+       <property name="toolTip">
+        <string>Increase word's count per current StudySession.</string>
+       </property>
        <property name="singleStep">
         <number>5</number>
        </property>
@@ -88,6 +97,9 @@
        <property name="enabled">
         <bool>true</bool>
        </property>
+       <property name="toolTip">
+        <string>Use all word's topics per current StudySession.</string>
+       </property>
        <property name="text">
         <string>All topics</string>
        </property>
@@ -99,7 +111,11 @@
     </layout>
    </item>
    <item>
-    <widget class="QListView" name="topicListView"/>
+    <widget class="QListView" name="topicListView">
+     <property name="toolTip">
+      <string>Select topics per current StudySession.</string>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -118,6 +134,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="continueButton">
+       <property name="toolTip">
+        <string>Go to StudySession.</string>
+       </property>
        <property name="text">
         <string>Continue</string>
        </property>

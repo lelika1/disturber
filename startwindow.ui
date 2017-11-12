@@ -52,6 +52,9 @@
         <bold>true</bold>
        </font>
       </property>
+      <property name="toolTip">
+       <string>Start StudySession.</string>
+      </property>
       <property name="text">
        <string>Study</string>
       </property>
