@@ -2,20 +2,26 @@
 #define STUDYSESSION_H
 
 #include "database.h"
+#include <QStringList>
 #include <vector>
 #include <ctime>
 
 class StudyEntry: public DBEntry {
 public:
-    explicit StudyEntry(DBEntry e) : DBEntry(std::move(e)) {}
+    explicit StudyEntry(DBEntry e);
 
     QVariant data(int col, int role = Qt::DisplayRole) const;
     bool setData(int col, const QVariant & value, int role = Qt::EditRole);
 
 public:
+    const QStringList ruWords;
+    const QStringList deWords;
+    const bool deWordIsNoun;
+
     std::time_t startTime = 0;
     std::time_t firstSubmissionTime = 0;
     size_t attempts = 0;
+    bool givePenalty = false;
     QString firstAnswer = "";
     bool checked = false;
 };
@@ -25,7 +31,7 @@ public:
     StudySession(DataBase *_db, bool ruToDeDirection, size_t wordsCount, const QStringList &topicsList);
 
     const QString* GetWord();
-    bool SubmitAnswer(const QString &answer, QString &correctAnswer);
+    QString SubmitAnswer(const QString &answer);
     bool GetRuToDe() const { return ruToDe; }
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;

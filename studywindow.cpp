@@ -35,11 +35,11 @@ void StudyWindow::Exec() {
 void StudyWindow::on_checkButton_clicked() {
     QString currentAnswer = ui->toWordEdit->text().simplified();
 
-    QString correctAnswer;
-    if (!session_->SubmitAnswer(currentAnswer, correctAnswer)) {
+    QString err = session_->SubmitAnswer(currentAnswer);
+    if (err.size() > 0) {
         ui->toWordEdit->setFocusOnEdit();
         QMessageBox msgBox;
-        msgBox.setText(QString("Wrong! Correct translation: %1").arg(correctAnswer));
+        msgBox.setText(err);
         msgBox.exec();
         return;
     }

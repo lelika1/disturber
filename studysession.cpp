@@ -3,6 +3,16 @@
 
 #include <algorithm>
 
+namespace {
+bool IsDeutschNoun(const QStringList &words) {
+    if (words.size() != 2) {
+        return false;
+    }
+    const auto& article = words.first();
+    return article == "der" || article == "das" || article == "die";
+}
+} // anonymous namespace
+
 Configurator &config = Configurator::Instance();
 
 StudySession::StudySession(DataBase *_db, bool ruToDeDirection, size_t wordsCount, const QStringList &topicsList)
@@ -48,29 +58,50 @@ const QString* StudySession::GetWord() {
     return (ruToDe) ? &entry.ruWord : &entry.deWord;
 }
 
-bool StudySession::SubmitAnswer(const QString &answer, QString &correctAnswer) {
+QString StudySession::SubmitAnswer(const QString &answer) {
     StudyEntry& entry = entries[currentPairIndex];
+    const QString answerLower = answer.toLower();
+    const auto &answerWords = answerLower.splitRef(' ', QString::SkipEmptyParts);
+    const auto &correctAnswerWords = (ruToDe) ? entry.deWords : entry.ruWords;
+    const QString &correctAnswer = (ruToDe) ? entry.deWord : entry.ruWord;
+    if (answerWords.size() != correctAnswerWords.size()) {
+        return QString("You entered %1 words, want %2")
+                .arg(answerWords.size())
+                .arg(correctAnswerWords.size());
+    }
     entry.attempts++;
-    correctAnswer = (ruToDe) ? entry.deWord : entry.ruWord;
-    bool isCorrect = (answer.toLower() == correctAnswer.toLower());
 
     if (entry.attempts == 1) {
         entry.firstAnswer = answer;
         entry.firstSubmissionTime = std::time(nullptr);
-        if (entry.successRate == 0) {
-             entry.successRate = 1;
+    }
+
+    if (ruToDe && entry.deWordIsNoun) {
+        if (answerWords[1] != correctAnswerWords[1]) {
+            entry.givePenalty = true;
+            return QString("Correct answer is %1").arg(entry.deWord);
         }
-        entry.successRate *= (1.0 * (config.GetSuccessRate() - 1) / config.GetSuccessRate());
-        entry.successRate += (1.0 / config.GetSuccessRate()) * ((isCorrect) ? 1 : 0);
-        entry.lastTestDate = std::time(nullptr);
+        if (answerWords[0] != correctAnswerWords[0]) {
+            return "The article is wrong!";
+        }
+    } else {
+        if (answerLower != correctAnswer) {
+            entry.givePenalty = true;
+            return QString("Correct answer is %1").arg(correctAnswer);
+        }
     }
 
-    if (isCorrect) {
-        db->UpdateEntry(entry);
-        ++currentPairIndex;
+    // Here we at last have the correct answer.
+    entry.successRate *= (1.0 * (config.GetSuccessRate() - 1) / config.GetSuccessRate());
+    entry.lastTestDate = std::time(nullptr);
+    if (!entry.givePenalty) {
+        entry.successRate += (1.0 / config.GetSuccessRate());
     }
 
-    return isCorrect;
+    db->UpdateEntry(entry);
+    ++currentPairIndex;
+
+    return QString();
 }
 
 int StudySession::rowCount(const QModelIndex &/*parent*/) const  {
@@ -114,6 +145,13 @@ Qt::ItemFlags StudySession::flags(const QModelIndex &index) const {
     }
 }
 
+StudyEntry::StudyEntry(DBEntry e)
+    : DBEntry(std::move(e))
+    , ruWords(ruWord.split(' ', QString::SkipEmptyParts))
+    , deWords(deWord.split(' ', QString::SkipEmptyParts))
+    , deWordIsNoun(IsDeutschNoun(deWords))
+{}
+
 QVariant StudyEntry::data(int col, int role) const {
     if (role == Qt::CheckStateRole) {
         if (col == 0) {
@@ -122,7 +160,10 @@ QVariant StudyEntry::data(int col, int role) const {
         return QVariant();
     }
     if (role == Qt::BackgroundRole) {
-        return (attempts > 1) ? QBrush(Qt::red) : QVariant();
+        if (givePenalty || (col == 3 && attempts > 1)) {
+            return QBrush(Qt::red);
+        }
+        return QVariant();
     }
     if (role == Qt::DisplayRole) {
         switch (col) {
